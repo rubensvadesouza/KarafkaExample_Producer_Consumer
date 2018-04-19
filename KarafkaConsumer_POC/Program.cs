@@ -15,11 +15,6 @@ namespace KarafkaConsumer_POC
         protected static IConfigurationRoot _config { get; set; }
         public static void Main()
         {
-            _config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appconfig.json", optional: true, reloadOnChange: true)
-            .Build();
-
             var config = GetConfig();
 
             using (var consumer = new Consumer<int, string>(config, new IntDeserializer(), new StringDeserializer(Encoding.UTF8)))

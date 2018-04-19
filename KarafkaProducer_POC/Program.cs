@@ -23,59 +23,27 @@ namespace KarafkaProducer_POC
 
             using (var producer = new Producer<int, string>(config, new IntSerializer(), new StringSerializer(Encoding.UTF8)))
             {
-                //producer.ProduceAsync("n733uiq5-default", null, "teste da porra do certificado maldito que nao sei por que nao funfa direito")
-                //   .ContinueWith(result =>
-                //   {
-                //       var msg = result.Result;
-                //       if (msg.Error.Code != ErrorCode.NoError)
-                //       {
-                //           Console.WriteLine($"failed to deliver message: {msg.Error.Reason}");
-                //       }
-                //       else
-                //       {
-                //           Console.WriteLine($"delivered to: {result.Result.TopicPartitionOffset}");
-                //       }
-                //   });
-
-                //producer.Flush(TimeSpan.FromSeconds(10));
-
-                var task_1 = new System.Threading.Tasks.Task(() =>
+                for (int i = 0; i < 10000; i++)
                 {
-                    for (int i = 0; i < 10000; i++)
-                    {
-                        var result = producer.ProduceAsync("n733uiq5-default", 1, $"Mensagem de Teste {i}").Result;
-                    }
-                });
-
-                var task_2 = new System.Threading.Tasks.Task(() =>
-                {
-                    for (int i = 0; i < 10000; i++)
-                    {
-                        var result = producer.ProduceAsync("n733uiq5-default", 2, $"Mensagem de Teste {i}").Result;
-                    }
-                });
-
-                var task_3 = new System.Threading.Tasks.Task(() =>
-                {
-                    for (int i = 0; i < 10000; i++)
-                    {
-                        var result = producer.ProduceAsync("n733uiq5-default", 3, $"Mensagem de Teste {i}").Result;
-                    }
-                });
-
-                task_1.Start();
-                task_2.Start();
-                task_3.Start();
-
-                while (true)
-                {
+                    producer.ProduceAsync("n733uiq5-default", i, $"teste de Envio de Mensagem {i}")
+                   .ContinueWith(result =>
+                   {
+                       var msg = result.Result;
+                       if (msg.Error.Code != ErrorCode.NoError)
+                       {
+                           Console.WriteLine($"failed to deliver message: {msg.Error.Reason}");
+                       }
+                       else
+                       {
+                           Console.WriteLine($"delivered to: {result.Result.TopicPartitionOffset}");
+                       }
+                   });
                 }
+
 
                 producer.Flush(TimeSpan.FromSeconds(10));
             }
         }
-
-
 
         private static Dictionary<string, object> GetConfig()
         {
