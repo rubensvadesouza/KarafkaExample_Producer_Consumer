@@ -1,5 +1,6 @@
 ﻿using Confluent.Kafka;
 using Confluent.Kafka.Serialization;
+using MemberProducerSync.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -13,16 +14,6 @@ namespace MemberProducerSync.Base
 {
     public class BaseProducer
     {
-        protected readonly IConfigurationRoot _config;
-
-        public BaseProducer()
-        {
-            _config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-            .Build();
-        }
-
         public virtual async Task<ProducerResult> Send(string message)
         {
             return await Send(0, message);
@@ -35,7 +26,7 @@ namespace MemberProducerSync.Base
                 using (var producer = new Producer<int, string>(GetConfig(), new IntSerializer(), new StringSerializer(Encoding.UTF8)))
                 {
 
-                    var ret = producer.ProduceAsync(_config["Karafka:topicName"], key, message).Result;
+                    var ret = producer.ProduceAsync(ConfigHelper.GetField("Karafka:topicName"), key, message).Result;
 
                     if (ret.Error.HasError)
                     {
@@ -51,19 +42,16 @@ namespace MemberProducerSync.Base
             return await t;
 
         }
-
         private Dictionary<string, object> GetConfig()
         {
-
-            var valor = _config["Karafka:brokers"];
             var config = new Dictionary<string, object>
             {
-                { "bootstrap.servers",_config["Karafka:brokers"].ToString() },
+                { "bootstrap.servers",ConfigHelper.GetField("Karafka:brokers")},
                 { "sasl.mechanisms", "SCRAM-SHA-256" },
                 { "security.protocol", "SASL_SSL" },
-                { "ssl.ca.location", _config["Karafka:caLocation"].ToString() },
-                { "sasl.username", _config["Karafka:user"].ToString() },
-                { "sasl.password", _config["Karafka:password"].ToString() },
+                { "ssl.ca.location", ConfigHelper.GetField("Karafka:caLocation")},
+                { "sasl.username", ConfigHelper.GetField("Karafka:user")},
+                { "sasl.password", ConfigHelper.GetField("Karafka:password") },
                 {"debug","all" }
             };
 
