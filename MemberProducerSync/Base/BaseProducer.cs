@@ -19,40 +19,51 @@ namespace MemberProducerSync.Base
         {
             _config = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appconfig.json", optional: true, reloadOnChange: true)
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
             .Build();
         }
 
-        public virtual ProducerResult Send(int key, string message)
+        public virtual async Task<ProducerResult> Send(string message)
         {
-            using (var producer = new Producer<int, string>(GetConfig(), new IntSerializer(), new StringSerializer(Encoding.UTF8)))
+            return await Send(0, message);
+        }
+
+        public virtual async Task<ProducerResult> Send(int key, string message)
+        {
+            var t = Task.Run(() =>
             {
-                for (int i = 0; i < 10000; i++)
+                using (var producer = new Producer<int, string>(GetConfig(), new IntSerializer(), new StringSerializer(Encoding.UTF8)))
                 {
-                    var ret = producer.ProduceAsync("n733uiq5-default", i, $"teste de Envio de Mensagem {i}").Result;
+
+                    var ret = producer.ProduceAsync(_config["Karafka:topicName"], key, message).Result;
 
                     if (ret.Error.HasError)
                     {
-                        return ProducerResult.GetError($"");
+                        return ProducerResult.GetError($"Error Code:{ret.Error.Code} Reason: {ret.Error.Reason}");
                     }
+
+                    producer.Flush(TimeSpan.FromSeconds(10));
                 }
 
-                producer.Flush(TimeSpan.FromSeconds(10));
-            }
+                return ProducerResult.Sucess;
+            });
 
-            return ProducerResult.Sucess;
+            return await t;
+
         }
 
         private Dictionary<string, object> GetConfig()
         {
+
+            var valor = _config["Karafka:brokers"];
             var config = new Dictionary<string, object>
             {
-                { "bootstrap.servers",_config["brokers"].ToString() },
+                { "bootstrap.servers",_config["Karafka:brokers"].ToString() },
                 { "sasl.mechanisms", "SCRAM-SHA-256" },
                 { "security.protocol", "SASL_SSL" },
-                { "ssl.ca.location", _config["caLocation"].ToString() },
-                { "sasl.username", _config["user"].ToString() },
-                { "sasl.password", _config["password"].ToString() },
+                { "ssl.ca.location", _config["Karafka:caLocation"].ToString() },
+                { "sasl.username", _config["Karafka:user"].ToString() },
+                { "sasl.password", _config["Karafka:password"].ToString() },
                 {"debug","all" }
             };
 

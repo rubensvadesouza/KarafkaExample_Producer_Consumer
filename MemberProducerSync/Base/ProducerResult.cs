@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace MemberProducerSync.Base
 {
-    public class ProducerResult
+    public class ProducerResult : ActionResult
     {
         public ProducerResult(EnumProducerResult result)
         {

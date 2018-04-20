@@ -16,7 +16,7 @@ namespace KarafkaProducer_POC
         {
             _config = new ConfigurationBuilder()
          .SetBasePath(Directory.GetCurrentDirectory())
-         .AddJsonFile("appconfig.json", optional: true, reloadOnChange: true)
+         .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
          .Build();
 
             var config = GetConfig();
@@ -49,12 +49,12 @@ namespace KarafkaProducer_POC
         {
             var config = new Dictionary<string, object>
             {
-                { "bootstrap.servers",_config["brokers"].ToString() },
+                { "bootstrap.servers",_config["Karafka:brokers"].ToString() },
                 { "sasl.mechanisms", "SCRAM-SHA-256" },
                 { "security.protocol", "SASL_SSL" },
-                { "ssl.ca.location", _config["caLocation"].ToString() },
-                { "sasl.username", _config["user"].ToString() },
-                { "sasl.password", _config["password"].ToString() },
+                { "ssl.ca.location", _config["Karafka:caLocation"].ToString() },
+                { "sasl.username", _config["Karafka:user"].ToString() },
+                { "sasl.password", _config["Karafka:password"].ToString() },
                 {"debug","all" }
             };
 
