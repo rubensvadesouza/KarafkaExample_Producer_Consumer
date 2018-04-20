@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MemberProducerSync.Base
@@ -39,6 +40,26 @@ namespace MemberProducerSync.Base
             return result;
         }
 
+        public override void ExecuteResult(ActionContext context)
+        {
+            base.ExecuteResult(context);
+        }
+
+
+        public override Task ExecuteResultAsync(ActionContext context)
+        {
+            var response = context.HttpContext.Response;
+            response.ContentType = "application/json";
+            response.StatusCode = (int)Result;
+
+            if (!string.IsNullOrEmpty(Message))
+            {
+                var xmlBytes = Encoding.ASCII.GetBytes(Message);
+                context.HttpContext.Response.Body.WriteAsync(xmlBytes, 0, xmlBytes.Length);
+            }
+
+            return base.ExecuteResultAsync(context);
+        }
     }
 }
 

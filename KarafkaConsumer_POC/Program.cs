@@ -1,6 +1,8 @@
 ﻿using Confluent.Kafka;
 using Confluent.Kafka.Serialization;
+using KarafkaConsumer_POC.Model;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,20 +17,25 @@ namespace KarafkaConsumer_POC
         protected static IConfigurationRoot _config { get; set; }
         public static void Main()
         {
+            _config = new ConfigurationBuilder()
+                         .SetBasePath(Directory.GetCurrentDirectory())
+                         .AddJsonFile("appconfig.json", optional: true, reloadOnChange: true)
+                         .Build();
+
+
             var config = GetConfig();
 
             using (var consumer = new Consumer<int, string>(config, new IntDeserializer(), new StringDeserializer(Encoding.UTF8)))
             {
                 consumer.Subscribe(_config["topicName"]);
 
-                consumer.OnConsumeError += (_, err)
-                    => Console.WriteLine($"consume error: {err.Error.Reason}");
+                //consumer.OnConsumeError += (_, err)
+                //    => Console.WriteLine($"consume error: {err.Error.Reason}");
 
-                consumer.OnMessage += (_, msg)
-                    => Console.WriteLine($"consumed: {msg.Value}");
+                consumer.OnMessage += ConsumeMessage;
 
-                consumer.OnPartitionEOF += (_, tpo)
-                    => Console.WriteLine($"end of partition: {tpo}");
+                //consumer.OnPartitionEOF += (_, tpo)
+                //    => Console.WriteLine($"end of partition: {tpo}");
 
                 while (true)
                 {
@@ -36,6 +43,34 @@ namespace KarafkaConsumer_POC
                 }
             }
 
+        }
+
+        public static void ConsumeMessage(object sender, Message<int, string> message)
+        {
+
+            var model = JsonConvert.DeserializeObject<MemberModel>(message.Value);
+
+            InsertMember(model);
+            var member = GetMember();
+            SendRequest(member);
+
+        }
+
+        private static void SendRequest(MemberModel model)
+        {
+            //TODO: Disparar API
+        }
+
+        private static MemberModel GetMember()
+        {
+            //TODO:Disparar GetEvent
+
+            return new MemberModel();
+        }
+
+        private static void InsertMember(MemberModel model)
+        {
+            //TODO:DispararEnventHandler
         }
 
         private static Dictionary<string, object> GetConfig()
@@ -50,7 +85,6 @@ namespace KarafkaConsumer_POC
                 { "sasl.password", _config["password"].ToString() },
                 { "group.id", Guid.NewGuid().ToString() },
                 { "auto.offset.reset", "smallest" },
-                //{"debug","all" }
             };
 
             return config;

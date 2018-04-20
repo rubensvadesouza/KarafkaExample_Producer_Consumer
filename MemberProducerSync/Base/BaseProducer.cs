@@ -21,11 +21,10 @@ namespace MemberProducerSync.Base
 
         public virtual async Task<ProducerResult> Send(int key, string message)
         {
-            var t = Task.Run(() =>
+            var task = Task.Run(() =>
             {
                 using (var producer = new Producer<int, string>(GetConfig(), new IntSerializer(), new StringSerializer(Encoding.UTF8)))
                 {
-
                     var ret = producer.ProduceAsync(ConfigHelper.GetField("Karafka:topicName"), key, message).Result;
 
                     if (ret.Error.HasError)
@@ -39,7 +38,7 @@ namespace MemberProducerSync.Base
                 return ProducerResult.Sucess;
             });
 
-            return await t;
+            return await task;
 
         }
         private Dictionary<string, object> GetConfig()

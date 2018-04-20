@@ -14,7 +14,7 @@ namespace MemberProducerSync.Controllers
     [AllowAnonymous]
     [Produces("application/json")]
     [Route("api/[controller]")]
-    public class MemberController : Controller
+    public class MemberSyncController : Controller
     {
         private readonly MemberProducer _producer = new MemberProducer();
 

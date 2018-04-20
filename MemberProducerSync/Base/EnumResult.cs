@@ -7,8 +7,7 @@ namespace MemberProducerSync.Base
 {
     public enum EnumProducerResult
     {
-        Sucess = 1,
-        Warning = 2,
-        Error = 3
+        Sucess = 200,
+        Error = 400
     }
 }

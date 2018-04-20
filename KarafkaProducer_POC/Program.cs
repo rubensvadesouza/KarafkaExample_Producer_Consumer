@@ -1,5 +1,4 @@
-﻿
-using Confluent.Kafka;
+﻿using Confluent.Kafka;
 using Confluent.Kafka.Serialization;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -16,7 +15,7 @@ namespace KarafkaProducer_POC
         {
             _config = new ConfigurationBuilder()
          .SetBasePath(Directory.GetCurrentDirectory())
-         .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+         .AddJsonFile("appconfig.json", optional: true, reloadOnChange: true)
          .Build();
 
             var config = GetConfig();
