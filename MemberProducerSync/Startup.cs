@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using MemberProducerSync.EF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
@@ -25,12 +27,13 @@ namespace MemberProducerSync
         {
             services.AddMvc();
 
+            services.AddDbContext<MemberContext>(options =>
+                options.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=Legado;Integrated Security=True;MultipleActiveResultSets=True"));
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
             });
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
