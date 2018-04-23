@@ -14,10 +14,8 @@ namespace MemberProducerSync.Model
         public long Age { get; set; }
         public string CellNumber { get; set; }
         public DateTime DateOfBirth { get; set; }
-
-        public string EventType { get; set; }
-
-        public DateTime GeneratorDate { get; set; }
+        public string Code { get; set; }
+        public DateTime Date { get; set; }
 
     }
 }

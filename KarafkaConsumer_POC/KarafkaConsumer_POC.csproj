@@ -15,9 +15,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CQRS.MongoDB\CQRS.MongoDB.csproj" />
+    <ProjectReference Include="..\CQRS\CQRS.csproj" />
+    <ProjectReference Include="..\EventSourcing\EventSourcing.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="appconfig.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="externalFiles\" />
   </ItemGroup>
 
 </Project>
