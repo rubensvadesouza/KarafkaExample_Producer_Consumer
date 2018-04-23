@@ -16,7 +16,7 @@ namespace MemberProducerSync.MemberService
         private MongoClient _client => new MongoClient(ConfigHelper.Configuration.GetValue<string>("MongoDB:connectionString"));
 
 
-        public void InsertMember(MemberModel model)
+        public async void InsertMember(MemberModel model)
         {
             IMongoDatabase db = _client.GetDatabase("Member");
             var collection = db.GetCollection<MemberModel>("Members");
@@ -34,10 +34,18 @@ namespace MemberProducerSync.MemberService
             else
             {
                 model.EventType = MemberEvents.Update;
-                collection.InsertOne(model);
+                await collection.InsertOneAsync(model);
             }
 
             HttpHelper.SendEventMember(model);
+        }
+
+        public async Task<MemberModel> FindAsync(string id)
+        {
+            IMongoDatabase db = _client.GetDatabase("Member");
+
+            var collection = db.GetCollection<MemberModel>("Members");
+            return await collection.Find(x => x.ID == id).FirstOrDefaultAsync();
         }
 
         public MemberModel Find(string id)
@@ -48,12 +56,12 @@ namespace MemberProducerSync.MemberService
             return collection.Find(x => x.ID == id).FirstOrDefault();
         }
 
-        public void Update(MemberModel member)
+        public async void Update(MemberModel member)
         {
             IMongoDatabase db = _client.GetDatabase("Member");
             var collection = db.GetCollection<MemberModel>("Members");
 
-            var result = collection.ReplaceOne(x => x.ID == member.ID, member);
+            await collection.ReplaceOneAsync(x => x.ID == member.ID, member);
         }
 
     }

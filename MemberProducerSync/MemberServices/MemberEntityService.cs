@@ -62,10 +62,15 @@ namespace MemberProducerSync.MemberService
             }
 
             return true;
-        } 
+        }
         public MemberEntity GetById(string id)
         {
             return _repo.GetSingle(id);
+        }
+
+        public Task<MemberEntity> GetByIdAsync(string id)
+        {
+            return _repo.GetSingleAsync(id);
         }
 
         private MemberEntity Map(MemberModel member, MemberEntity entity = null)

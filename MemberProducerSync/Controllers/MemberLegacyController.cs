@@ -27,5 +27,13 @@ namespace MemberProducerSync.Controllers
 
             return Ok();
         }
+
+        [HttpGet()]
+        [Route("{id}")]
+        public async Task<IActionResult> Get(string id)
+        {
+            var result = await _service.GetByIdAsync(id);
+            return Ok(result);
+        }
     }
 }
