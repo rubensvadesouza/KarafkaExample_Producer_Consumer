@@ -25,6 +25,7 @@ namespace KarafkaConsumer_POC
 
             var config = GetConfig();
 
+
             using (var consumer = new Consumer<int, string>(config, new IntDeserializer(), new StringDeserializer(Encoding.UTF8)))
             {
                 consumer.Subscribe(_config["topicName"]);
@@ -47,10 +48,7 @@ namespace KarafkaConsumer_POC
 
         public static void ConsumeMessage(object sender, Message<int, string> message)
         {
-
             var model = JsonConvert.DeserializeObject<MemberModel>(message.Value);
-
-
         }
 
         private static void SendRequest(MemberModel model)

@@ -21,7 +21,7 @@ namespace MemberProducerSync.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Insert([FromBody]MemberModel member)
+        public IActionResult Insert([FromBody]MemberModel member)
         {
             _service.InsertOrUpdate(member);
 
