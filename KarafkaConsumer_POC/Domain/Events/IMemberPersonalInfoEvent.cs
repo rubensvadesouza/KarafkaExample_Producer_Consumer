@@ -3,7 +3,7 @@ using EventSourcing.Events;
 
 namespace KarafkaConsumer_POC.Domain.Events
 {
-    public interface IPersonalInfoEvent : IEvent
+    public interface IMemberPersonalInfoEvent : IEvent
     {
         string ID { get; }
         string LegacyID { get; }

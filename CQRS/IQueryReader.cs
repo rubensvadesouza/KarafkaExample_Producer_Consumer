@@ -6,7 +6,7 @@ using EventSourcing.Events;
 
 namespace CQRS
 {
-    public interface IReadCommand<TAggregate, TEvent> where TAggregate : AggregateRoot<TEvent>, new() where TEvent : IEvent
+    public interface IQueryReader<TAggregate, TEvent> where TAggregate : AggregateRoot<TEvent>, new() where TEvent : IEvent
     {
         Task<TAggregate> ReadOneAsync(string id);
         Task<TAggregate> ReadOneAsync(Expression<Func<TAggregate, bool>> predicate);

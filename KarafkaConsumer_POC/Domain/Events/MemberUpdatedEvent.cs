@@ -3,7 +3,7 @@ using EventSourcing.Events;
 
 namespace KarafkaConsumer_POC.Domain.Events
 {
-    public class UpdatePersonalInfoEvent : Event, IPersonalInfoEvent
+    public class MemberUpdatedEvent : Event, IMemberPersonalInfoEvent
     {
         public string ID { get; }
         public string FullName { get; }
@@ -13,7 +13,7 @@ namespace KarafkaConsumer_POC.Domain.Events
         public string LegacyID { get; }
         public string EventType { get; }
 
-        public UpdatePersonalInfoEvent(string ID, string LegacyID, string FullName, long Age, string CellNumber, DateTime DateOfBirth, string RequestID, DateTime EventDate) : base(RequestID, EventDate)
+        public MemberUpdatedEvent(string ID, string LegacyID, string FullName, long Age, string CellNumber, DateTime DateOfBirth, string RequestID, DateTime EventDate) : base(RequestID, EventDate)
         {
             this.ID = ID;
             this.LegacyID = LegacyID;

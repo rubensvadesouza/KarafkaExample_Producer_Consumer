@@ -6,29 +6,29 @@ using KarafkaConsumer_POC.Domain.Events;
 
 namespace KarafkaConsumer_POC.Domain.Aggregates
 {
-    public class MemberAggregate : AggregateRoot<IPersonalInfoEvent>
+    public class MemberAggregate : AggregateRoot<IMemberPersonalInfoEvent>
     {
-        internal List<IPersonalInfoEvent> Events { get; set; }
+        internal List<IMemberPersonalInfoEvent> Events { get; set; }
         internal Member Member { get; private set; }
         public override void RebuildFromEventStream()
         {
             Member = new Member();
             Events.OrderBy(x => x.EventDate).ToList().ForEach(x =>
             {
-                Member.ID = x.ID;
-                Member.LegacyID = x.LegacyID;
-                Member.Age = x.Age;
-                Member.CellNumber = x.CellNumber;
-                Member.DateOfBirth = x.DateOfBirth;
-                Member.FullName = x.FullName;
+                if (!string.IsNullOrWhiteSpace(x.ID)) { Member.ID = x.ID; }
+                if (!string.IsNullOrWhiteSpace(x.ID)) { Member.LegacyID = x.LegacyID; }
+                if (!string.IsNullOrWhiteSpace(x.ID)) { Member.CellNumber = x.CellNumber; }
+                if (!string.IsNullOrWhiteSpace(x.FullName)) { Member.FullName = x.FullName; }
+                if (x.Age > 0) { Member.Age = x.Age; }
+                if (x.DateOfBirth != null || x.DateOfBirth != DateTime.MinValue) { Member.DateOfBirth = x.DateOfBirth; }
             });
         }
 
-        public override void ApplyChange(IPersonalInfoEvent @event)
+        public override void ApplyChange(IMemberPersonalInfoEvent @event)
         {
             Events.Add(@event);
         }
 
-        public static MemberAggregate New() => new MemberAggregate { Events = new List<IPersonalInfoEvent>() };
+        public static MemberAggregate New() => new MemberAggregate { Events = new List<IMemberPersonalInfoEvent>() };
     }
 }

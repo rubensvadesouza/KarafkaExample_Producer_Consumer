@@ -5,17 +5,20 @@ using KarafkaConsumer_POC.Contracts.Messages;
 using KarafkaConsumer_POC.Domain.Aggregates;
 using KarafkaConsumer_POC.Domain.Commands;
 using KarafkaConsumer_POC.Domain.Events;
+using KarafkaConsumer_POC.Domain.Queries;
 
 namespace KarafkaConsumer_POC.Domain.Handlers
 {
-    public class MemberCreateEventHandler
+    public class MemberCreatedEventHandler
     {
-        public MemberCreateEventHandler(MemberCreateCommand command)
+        public MemberCreatedEventHandler(MemberCreatedCommand command, MemberQueryReader qReader)
         {
             _command = command;
+            _reader = qReader;
         }
 
-        MemberCreateCommand _command;
+        MemberCreatedCommand _command;
+        MemberQueryReader _reader;
 
         public async Task<bool> HandleMember(AddMemberMessage message)
         {
@@ -24,7 +27,7 @@ namespace KarafkaConsumer_POC.Domain.Handlers
             try
             {
                 var ID = MongoUtils.GenerateNewObjectId();
-                agg.ApplyChange(new AddMemberEvent(ID, message.LegacyID, message.FullName, message.Age, message.CellNumber, message.DateOfBirth, message.RequestId, message.RequestDate));
+                agg.ApplyChange(new MemberCreatedEvent(ID, message.LegacyID, message.FullName, message.Age, message.CellNumber, message.DateOfBirth, message.RequestId, message.RequestDate));
                 agg.RebuildFromEventStream();
                 await _command.AddAsync(agg);
             }
