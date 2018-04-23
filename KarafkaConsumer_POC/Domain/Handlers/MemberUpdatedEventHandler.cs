@@ -8,9 +8,9 @@ using KarafkaConsumer_POC.Domain.Events;
 
 namespace KarafkaConsumer_POC.Domain.Handlers
 {
-    public class UpdateMemberEventHandler
+    public class MemberUpdatedEventHandler
     {
-        public UpdateMemberEventHandler(UpdateMemberCommand command, ReadMemberCommand reader)
+        public MemberUpdatedEventHandler(UpdateMemberCommand command, ReadMemberCommand reader)
         {
             _command = command;
             _reader = reader;
@@ -18,7 +18,7 @@ namespace KarafkaConsumer_POC.Domain.Handlers
 
         UpdateMemberCommand _command;
         ReadMemberCommand _reader;
-        public async Task<bool> HandleMember(UpdateMemberInfoMessage message)
+        public async Task<bool> HandleMember(MemberUpdatedMessage message)
         {
             var agg = _reader.ReadOneAsync(x => x.Member.LegacyID == message.LegacyID).Result;
 
@@ -30,7 +30,7 @@ namespace KarafkaConsumer_POC.Domain.Handlers
             try
             {
                 var ID = MongoUtils.GenerateNewObjectId();
-                agg.ApplyChange(new UpdatePersonalInfoEvent(ID, message.LegacyID, message.FullName, message.Age, message.CellNumber, message.DateOfBirth, message.RequestId, message.RequestDate));
+                agg.ApplyChange(new MemberUpdatedEvent(ID, message.LegacyID, message.FullName, message.Age, message.CellNumber, message.DateOfBirth, message.RequestId, message.RequestDate));
                 agg.RebuildFromEventStream();
                 await _command.UpdateAsync(agg);
             }

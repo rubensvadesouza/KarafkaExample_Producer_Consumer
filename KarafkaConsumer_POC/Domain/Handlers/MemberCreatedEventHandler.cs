@@ -8,9 +8,9 @@ using KarafkaConsumer_POC.Domain.Events;
 
 namespace KarafkaConsumer_POC.Domain.Handlers
 {
-    public class MemberCreateEventHandler
+    public class MemberCreatedEventHandler
     {
-        public MemberCreateEventHandler(MemberCreateCommand command)
+        public MemberCreatedEventHandler(MemberCreateCommand command)
         {
             _command = command;
         }
@@ -24,7 +24,7 @@ namespace KarafkaConsumer_POC.Domain.Handlers
             try
             {
                 var ID = MongoUtils.GenerateNewObjectId();
-                agg.ApplyChange(new AddMemberEvent(ID, message.LegacyID, message.FullName, message.Age, message.CellNumber, message.DateOfBirth, message.RequestId, message.RequestDate));
+                agg.ApplyChange(new MemberCreatedEvent(ID, message.LegacyID, message.FullName, message.Age, message.CellNumber, message.DateOfBirth, message.RequestId, message.RequestDate));
                 agg.RebuildFromEventStream();
                 await _command.AddAsync(agg);
             }

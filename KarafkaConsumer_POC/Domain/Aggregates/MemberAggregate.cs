@@ -6,9 +6,9 @@ using KarafkaConsumer_POC.Domain.Events;
 
 namespace KarafkaConsumer_POC.Domain.Aggregates
 {
-    public class MemberAggregate : AggregateRoot<IPersonalInfoEvent>
+    public class MemberAggregate : AggregateRoot<IMemberPersonalInfoEvent>
     {
-        internal List<IPersonalInfoEvent> Events { get; set; }
+        internal List<IMemberPersonalInfoEvent> Events { get; set; }
         internal Member Member { get; private set; }
         public override void RebuildFromEventStream()
         {
@@ -24,11 +24,11 @@ namespace KarafkaConsumer_POC.Domain.Aggregates
             });
         }
 
-        public override void ApplyChange(IPersonalInfoEvent @event)
+        public override void ApplyChange(IMemberPersonalInfoEvent @event)
         {
             Events.Add(@event);
         }
 
-        public static MemberAggregate New() => new MemberAggregate { Events = new List<IPersonalInfoEvent>() };
+        public static MemberAggregate New() => new MemberAggregate { Events = new List<IMemberPersonalInfoEvent>() };
     }
 }
