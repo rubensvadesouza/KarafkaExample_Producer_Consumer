@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MemberProducerSync.Base
+namespace MemberProducerSync.EF.Interface
 {
-    public enum EnumProducerResult
+    public interface IEntityBase
     {
-        Sucess = 200,
-        Error = 400
+        string ID { get; set; }
     }
 }

@@ -5,8 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
 using MemberProducerSync.EF;
+using MemberProducerSync.EF.Interface;
 
-namespace MemberProducerSync.Repository
+namespace MemberProducerSync.Repository.Interface
 {
     public interface IEntityBaseRepository<T> where T : class, IEntityBase, new()
     {

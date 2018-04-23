@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MemberProducerSync.Base
+namespace MemberProducerSync.Utils
 {
     public class ProducerResult : ActionResult
     {

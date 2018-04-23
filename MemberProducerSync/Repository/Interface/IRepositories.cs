@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MemberProducerSync.Repository
+namespace MemberProducerSync.Repository.Interface
 {
     public interface IMemberRepository : IEntityBaseRepository<MemberEntity> { }
 }

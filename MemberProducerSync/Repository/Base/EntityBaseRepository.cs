@@ -1,4 +1,6 @@
 ﻿using MemberProducerSync.EF;
+using MemberProducerSync.EF.Interface;
+using MemberProducerSync.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
