@@ -2,6 +2,7 @@
 using Confluent.Kafka.Serialization;
 using KarafkaConsumer_POC.Contracts.Messages;
 using KarafkaConsumer_POC.Model;
+using MemberConsumerSync;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -14,14 +15,17 @@ namespace KarafkaConsumer_POC
 
     public class Program
     {
-
         protected static IConfigurationRoot _config { get; set; }
+        protected static MemberConsumerEventService _eventService { get; set; }
+
         public static void Main()
         {
             _config = new ConfigurationBuilder()
                          .SetBasePath(Directory.GetCurrentDirectory())
                          .AddJsonFile("appconfig.json", optional: true, reloadOnChange: true)
                          .Build();
+
+            _eventService = new MemberConsumerEventService();
 
 
             var config = GetConfig();
@@ -45,21 +49,7 @@ namespace KarafkaConsumer_POC
 
         public static void ConsumeMessage(object sender, Message<int, string> message)
         {
-
-            var baseMessage = JsonConvert.DeserializeObject<BaseMessage>(message.Value);
-
-
-
-        }
-
-        private static void SendRequest(MemberModel model)
-        {
-            //TODO: Disparar API
-        }
-
-        private static MemberModel InsertEvent(MemberModel model)
-        {
-            return null;
+            _eventService.ProcessMessage(message.Value);
         }
 
         private static Dictionary<string, object> GetConfig()

@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\KarafkaConsumer_POC\KarafkaConsumer_POC.csproj" />
+    <ProjectReference Include="..\KarafkaConsumer_POC\MemberConsumerSync.csproj" />
   </ItemGroup>
 
 </Project>

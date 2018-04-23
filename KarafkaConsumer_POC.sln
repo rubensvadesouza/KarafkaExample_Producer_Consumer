@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KarafkaConsumer_POC", "KarafkaConsumer_POC\KarafkaConsumer_POC.csproj", "{2B5E222E-F26D-4E71-91CB-B73D05717FA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MemberConsumerSync", "KarafkaConsumer_POC\MemberConsumerSync.csproj", "{2B5E222E-F26D-4E71-91CB-B73D05717FA8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MemberProducerSync", "MemberProducerSync\MemberProducerSync.csproj", "{1044E67A-A6AD-484B-9A6B-F82A6FE5AE1C}"
 EndProject
