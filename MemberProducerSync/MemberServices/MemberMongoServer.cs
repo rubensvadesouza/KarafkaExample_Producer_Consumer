@@ -28,11 +28,12 @@ namespace MemberProducerSync.MemberService
             if (member != null)
             {
                 model.EventType = MemberEvents.Create;
-                Update(member);
+                model._id = member._id;
+                Update(model);
             }
             else
             {
-                model.EventType = MemberEvents.Create;
+                model.EventType = MemberEvents.Update;
                 collection.InsertOne(model);
             }
 
@@ -52,8 +53,7 @@ namespace MemberProducerSync.MemberService
             IMongoDatabase db = _client.GetDatabase("Member");
             var collection = db.GetCollection<MemberModel>("Members");
 
-            var filter = Builders<MemberModel>.Filter.Eq(s => s.ID, member.ID);
-            var result = collection.ReplaceOneAsync(filter, member).GetAwaiter();
+            var result = collection.ReplaceOne(x => x.ID == member.ID, member);
         }
 
     }
