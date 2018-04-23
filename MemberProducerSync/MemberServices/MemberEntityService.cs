@@ -14,12 +14,12 @@ using System.Threading.Tasks;
 
 namespace MemberProducerSync.MemberService
 {
-    public class MemberSqlService
+    public class MemberEntityService
     {
         private MemberEntityRepository _repo;
 
 
-        public MemberSqlService(MemberContext context)
+        public MemberEntityService(MemberContext context)
         {
             _repo = new MemberEntityRepository(context);
         }

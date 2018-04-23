@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KarafkaConsumer_POC", "Kara
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KarafkaProducer_POC", "KarafkaProducer_POC\KarafkaProducer_POC.csproj", "{7C696DB9-0EB0-4980-9305-DD19B68F4F9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemberProducerSync", "MemberProducerSync\MemberProducerSync.csproj", "{1044E67A-A6AD-484B-9A6B-F82A6FE5AE1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MemberProducerSync", "MemberProducerSync\MemberProducerSync.csproj", "{1044E67A-A6AD-484B-9A6B-F82A6FE5AE1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
