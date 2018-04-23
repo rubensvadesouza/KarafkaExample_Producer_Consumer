@@ -15,6 +15,7 @@ namespace MemberProducerSync.MemberService
     {
         private MongoClient _client => new MongoClient(ConfigHelper.Configuration.GetValue<string>("MongoDB:connectionString"));
 
+
         public async void InsertMember(MemberModel model)
         {
             IMongoDatabase db = _client.GetDatabase("Member");

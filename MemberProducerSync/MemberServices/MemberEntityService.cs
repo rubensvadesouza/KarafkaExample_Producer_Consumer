@@ -6,6 +6,7 @@ using MemberProducerSync.Producers;
 using MemberProducerSync.Repository;
 using MemberProducerSync.Utils;
 using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,8 @@ namespace MemberProducerSync.MemberService
         public void InsertOrUpdate(MemberModel model)
         {
             model.Date = DateTime.Now;
+            if (string.IsNullOrEmpty(model.LegacyID))
+                model.LegacyID = ObjectId.GenerateNewId().ToString();
             var sucess = InsertMember(model);
             if (sucess)
             {
