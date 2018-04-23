@@ -15,7 +15,6 @@ namespace MemberProducerSync.MemberService
     {
         private MongoClient _client => new MongoClient(ConfigHelper.Configuration.GetValue<string>("MongoDB:connectionString"));
 
-
         public async void InsertMember(MemberModel model)
         {
             IMongoDatabase db = _client.GetDatabase("Member");
@@ -23,7 +22,7 @@ namespace MemberProducerSync.MemberService
 
             model.Date = DateTime.Now;
 
-            var member = Find(model.ID);
+            var member = Find(model.LegacyID);
 
             if (member != null)
             {
@@ -45,7 +44,7 @@ namespace MemberProducerSync.MemberService
             IMongoDatabase db = _client.GetDatabase("Member");
 
             var collection = db.GetCollection<MemberModel>("Members");
-            return await collection.Find(x => x.ID == id).FirstOrDefaultAsync();
+            return await collection.Find(x => x.LegacyID == id).FirstOrDefaultAsync();
         }
 
         public MemberModel Find(string id)
@@ -53,7 +52,7 @@ namespace MemberProducerSync.MemberService
             IMongoDatabase db = _client.GetDatabase("Member");
 
             var collection = db.GetCollection<MemberModel>("Members");
-            return collection.Find(x => x.ID == id).FirstOrDefault();
+            return collection.Find(x => x.LegacyID == id).FirstOrDefault();
         }
 
         public async void Update(MemberModel member)
@@ -61,7 +60,7 @@ namespace MemberProducerSync.MemberService
             IMongoDatabase db = _client.GetDatabase("Member");
             var collection = db.GetCollection<MemberModel>("Members");
 
-            await collection.ReplaceOneAsync(x => x.ID == member.ID, member);
+            await collection.ReplaceOneAsync(x => x.LegacyID == member.LegacyID, member);
         }
 
     }

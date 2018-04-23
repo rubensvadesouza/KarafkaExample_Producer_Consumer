@@ -14,9 +14,9 @@ namespace KarafkaProducer_POC
         public static void Main()
         {
             _config = new ConfigurationBuilder()
-         .SetBasePath(Directory.GetCurrentDirectory())
-         .AddJsonFile("appconfig.json", optional: true, reloadOnChange: true)
-         .Build();
+             .SetBasePath(Directory.GetCurrentDirectory())
+             .AddJsonFile("appconfig.json", optional: true, reloadOnChange: true)
+             .Build();
 
             var config = GetConfig();
 

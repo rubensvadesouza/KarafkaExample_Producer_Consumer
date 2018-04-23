@@ -1,6 +1,8 @@
 ﻿using MemberProducerSync.EF;
 using MemberProducerSync.EF.Models;
 using MemberProducerSync.Model;
+using MemberProducerSync.Producer.Base;
+using MemberProducerSync.Producers;
 using MemberProducerSync.Repository;
 using MemberProducerSync.Utils;
 using Microsoft.Extensions.Configuration;
@@ -18,10 +20,13 @@ namespace MemberProducerSync.MemberService
     {
         private MemberEntityRepository _repo;
 
+        private MemberProducer _sync;
+
 
         public MemberEntityService(MemberContext context)
         {
             _repo = new MemberEntityRepository(context);
+            _sync = new MemberProducer(new ConfluentProducer());
         }
 
         public void InsertOrUpdate(MemberModel model)
@@ -30,7 +35,7 @@ namespace MemberProducerSync.MemberService
             var sucess = InsertMember(model);
             if (sucess)
             {
-                HttpHelper.SendEventMember(model);
+                _sync.Send(model);
             }
         }
 
@@ -38,7 +43,7 @@ namespace MemberProducerSync.MemberService
         {
             try
             {
-                var e = GetById(model.ID);
+                var e = GetById(model.LegacyID);
                 bool isNew = e == null;
 
                 e = Map(model);
@@ -77,7 +82,7 @@ namespace MemberProducerSync.MemberService
         {
             var e = entity ?? new MemberEntity();
 
-            e.ID = member.ID;
+            e.ID = member.LegacyID;
             e.FullName = member.FullName;
             e.DateOfBirth = member.DateOfBirth;
             e.CellNumber = member.CellNumber;

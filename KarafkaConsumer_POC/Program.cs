@@ -31,7 +31,6 @@ namespace KarafkaConsumer_POC
             {
                 consumer.Subscribe(_config["topicName"]);
 
-
                 consumer.OnMessage += ConsumeMessage;
 
                 consumer.OnPartitionEOF += (_, tpo)
@@ -49,13 +48,6 @@ namespace KarafkaConsumer_POC
 
             var baseMessage = JsonConvert.DeserializeObject<BaseMessage>(message.Value);
 
-            switch (baseMessage.Code)
-            {
-
-                //case ""
-                //default:
-                //    break;
-            }
 
 
         }

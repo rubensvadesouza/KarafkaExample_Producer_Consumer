@@ -18,4 +18,9 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Contracts\" />
+    <Folder Include="Producer\" />
+  </ItemGroup>
+
 </Project>

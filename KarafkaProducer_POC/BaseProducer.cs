@@ -1,7 +1,5 @@
 ﻿using Confluent.Kafka;
 using Confluent.Kafka.Serialization;
-using MemberProducerSync.Utils;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -18,6 +16,7 @@ namespace MemberProducerSync.Producer.Base
         {
             return await Send(0, message);
         }
+
 
         public virtual async Task<ProducerResult> Send(int key, string message)
         {
@@ -43,9 +42,6 @@ namespace MemberProducerSync.Producer.Base
         }
         private Dictionary<string, object> GetConfig()
         {
-
-
-
             var config = new Dictionary<string, object>
             {
                 { "bootstrap.servers", ConfigHelper.Configuration.GetValue<string>("Karafka:brokers")},

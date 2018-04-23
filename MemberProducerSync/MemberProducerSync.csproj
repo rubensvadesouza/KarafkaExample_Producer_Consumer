@@ -29,4 +29,8 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\KarafkaConsumer_POC\KarafkaConsumer_POC.csproj" />
+  </ItemGroup>
+
 </Project>
