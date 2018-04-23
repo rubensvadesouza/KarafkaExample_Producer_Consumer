@@ -5,22 +5,31 @@ using KarafkaConsumer_POC.Contracts.Messages;
 using KarafkaConsumer_POC.Domain.Aggregates;
 using KarafkaConsumer_POC.Domain.Commands;
 using KarafkaConsumer_POC.Domain.Events;
+using KarafkaConsumer_POC.Domain.Queries;
 
 namespace KarafkaConsumer_POC.Domain.Handlers
 {
     public class MemberUpdatedEventHandler
     {
-        public MemberUpdatedEventHandler(UpdateMemberCommand command, ReadMemberCommand reader)
+        public MemberUpdatedEventHandler(MemberUpdatedCommand command, MemberQueryReader reader)
         {
             _command = command;
             _reader = reader;
         }
 
-        UpdateMemberCommand _command;
-        ReadMemberCommand _reader;
+        MemberUpdatedCommand _command;
+        MemberQueryReader _reader;
         public async Task<bool> HandleMember(MemberUpdatedMessage message)
         {
             var agg = _reader.ReadOneAsync(x => x.Member.LegacyID == message.LegacyID).Result;
+
+            //if(agg != null)
+            //{
+            //    if(agg.Events.Any(x => x.EventDate == message.RequestDate))
+            //    {
+            //        return;
+            //    }
+            //}
 
             if (agg == null)
             {

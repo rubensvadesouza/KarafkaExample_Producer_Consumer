@@ -5,17 +5,20 @@ using KarafkaConsumer_POC.Contracts.Messages;
 using KarafkaConsumer_POC.Domain.Aggregates;
 using KarafkaConsumer_POC.Domain.Commands;
 using KarafkaConsumer_POC.Domain.Events;
+using KarafkaConsumer_POC.Domain.Queries;
 
 namespace KarafkaConsumer_POC.Domain.Handlers
 {
     public class MemberCreatedEventHandler
     {
-        public MemberCreatedEventHandler(MemberCreateCommand command)
+        public MemberCreatedEventHandler(MemberCreatedCommand command, MemberQueryReader qReader)
         {
             _command = command;
+            _reader = qReader;
         }
 
-        MemberCreateCommand _command;
+        MemberCreatedCommand _command;
+        MemberQueryReader _reader;
 
         public async Task<bool> HandleMember(AddMemberMessage message)
         {

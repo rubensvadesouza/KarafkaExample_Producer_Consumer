@@ -8,11 +8,11 @@ using MongoDB.Bson;
 
 namespace CQRS.MongoDB
 {
-    public abstract class ReadCommand<TAggregate, TEvent> : IReadCommand<TAggregate, TEvent> where TAggregate : AggregateRoot<TEvent>, new() where TEvent : IEvent
+    public abstract class QueryReader<TAggregate, TEvent> : IQueryReader<TAggregate, TEvent> where TAggregate : AggregateRoot<TEvent>, new() where TEvent : IEvent
     {
         MongoProvider _provider;
 
-        public ReadCommand(MongoProvider provider)
+        public QueryReader(MongoProvider provider)
         {
             _provider = provider;
         }
