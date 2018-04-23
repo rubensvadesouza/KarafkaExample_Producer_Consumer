@@ -47,6 +47,11 @@ namespace MemberProducerSync.Repository.Base
             return _context.Set<T>().FirstOrDefault(x => x.ID == id);
         }
 
+        public Task<T> GetSingleAsync(string id)
+        {
+            return _context.Set<T>().FirstOrDefaultAsync(x => x.ID == id);
+        }
+
         public T GetSingle(Expression<Func<T, bool>> predicate)
         {
             return _context.Set<T>().FirstOrDefault(predicate);

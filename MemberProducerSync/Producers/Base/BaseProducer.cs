@@ -43,6 +43,9 @@ namespace MemberProducerSync.Producer.Base
         }
         private Dictionary<string, object> GetConfig()
         {
+
+
+
             var config = new Dictionary<string, object>
             {
                 { "bootstrap.servers", ConfigHelper.Configuration.GetValue<string>("Karafka:brokers")},

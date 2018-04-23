@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KarafkaConsumer_POC", "KarafkaConsumer_POC\KarafkaConsumer_POC.csproj", "{2B5E222E-F26D-4E71-91CB-B73D05717FA8}"
 EndProject
@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MemberProducerSync", "Membe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventSourcing", "EventSourcing\EventSourcing.csproj", "{4673A7C8-EEA8-4DA9-B869-0604D5258B2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRS", "CQRS\CQRS.csproj", "{60A1BA31-B9F6-4F0C-9E54-6BD9773079D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CQRS", "CQRS\CQRS.csproj", "{60A1BA31-B9F6-4F0C-9E54-6BD9773079D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRS.MongoDB", "CQRS.MongoDB\CQRS.MongoDB.csproj", "{EEAF838F-D92C-4AD2-B70F-4FF670EC75AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CQRS.MongoDB", "CQRS.MongoDB\CQRS.MongoDB.csproj", "{EEAF838F-D92C-4AD2-B70F-4FF670EC75AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

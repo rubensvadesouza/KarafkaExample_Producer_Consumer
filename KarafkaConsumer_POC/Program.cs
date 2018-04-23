@@ -1,5 +1,6 @@
 ﻿using Confluent.Kafka;
 using Confluent.Kafka.Serialization;
+using KarafkaConsumer_POC.Contracts.Messages;
 using KarafkaConsumer_POC.Model;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -25,34 +26,37 @@ namespace KarafkaConsumer_POC
 
             var config = GetConfig();
 
+
             using (var consumer = new Consumer<int, string>(config, new IntDeserializer(), new StringDeserializer(Encoding.UTF8)))
             {
                 consumer.Subscribe(_config["topicName"]);
 
-                //consumer.OnConsumeError += (_, err)
-                //    => Console.WriteLine($"consume error: {err.Error.Reason}");
 
                 consumer.OnMessage += ConsumeMessage;
 
-                //consumer.OnPartitionEOF += (_, tpo)
-                //    => Console.WriteLine($"end of partition: {tpo}");
+                consumer.OnPartitionEOF += (_, tpo)
+                    => Console.WriteLine($"end of partition: {tpo}");
 
                 while (true)
                 {
                     consumer.Poll(TimeSpan.FromMilliseconds(100));
                 }
             }
-
         }
 
         public static void ConsumeMessage(object sender, Message<int, string> message)
         {
 
-            var model = JsonConvert.DeserializeObject<MemberModel>(message.Value);
+            var baseMessage = JsonConvert.DeserializeObject<BaseMessage>(message.Value);
 
-            //var dto = InsertEvent(model);
+            switch (baseMessage.Code)
+            {
 
-            //SendRequest(member);
+                //case ""
+                //default:
+                //    break;
+            }
+
 
         }
 
@@ -61,9 +65,9 @@ namespace KarafkaConsumer_POC
             //TODO: Disparar API
         }
 
-        private static void InsertEvent(MemberModel model)
+        private static MemberModel InsertEvent(MemberModel model)
         {
-            //TODO:DispararEnventHandler
+            return null;
         }
 
         private static Dictionary<string, object> GetConfig()

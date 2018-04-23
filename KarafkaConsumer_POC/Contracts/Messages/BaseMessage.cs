@@ -10,3 +10,4 @@ namespace KarafkaConsumer_POC.Contracts.Messages
         public DateTime RequestDate { get; set; }
     }
 }
+

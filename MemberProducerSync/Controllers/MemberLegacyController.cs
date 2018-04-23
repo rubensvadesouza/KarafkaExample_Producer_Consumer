@@ -21,11 +21,19 @@ namespace MemberProducerSync.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Insert([FromBody]MemberModel member)
+        public IActionResult Insert([FromBody]MemberModel member)
         {
             _service.InsertOrUpdate(member);
 
             return Ok();
+        }
+
+        [HttpGet()]
+        [Route("{id}")]
+        public async Task<IActionResult> Get(string id)
+        {
+            var result = await _service.GetByIdAsync(id);
+            return Ok(result);
         }
     }
 }

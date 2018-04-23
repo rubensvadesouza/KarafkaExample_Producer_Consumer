@@ -16,27 +16,36 @@ namespace MemberProducerSync.MemberService
         private MongoClient _client => new MongoClient(ConfigHelper.Configuration.GetValue<string>("MongoDB:connectionString"));
 
 
-        public void InsertMember(MemberModel model)
+        public async void InsertMember(MemberModel model)
         {
             IMongoDatabase db = _client.GetDatabase("Member");
             var collection = db.GetCollection<MemberModel>("Members");
 
-            model.GeneratorDate = DateTime.Now;
+            model.Date = DateTime.Now;
 
             var member = Find(model.ID);
 
             if (member != null)
             {
-                model.EventType = MemberEvents.Create;
-                Update(member);
+                model.Code = MemberEvents.Create;
+                model._id = member._id;
+                Update(model);
             }
             else
             {
-                model.EventType = MemberEvents.Create;
-                collection.InsertOne(model);
+                model.Code = MemberEvents.Update;
+                await collection.InsertOneAsync(model);
             }
 
             HttpHelper.SendEventMember(model);
+        }
+
+        public async Task<MemberModel> FindAsync(string id)
+        {
+            IMongoDatabase db = _client.GetDatabase("Member");
+
+            var collection = db.GetCollection<MemberModel>("Members");
+            return await collection.Find(x => x.ID == id).FirstOrDefaultAsync();
         }
 
         public MemberModel Find(string id)
@@ -47,13 +56,12 @@ namespace MemberProducerSync.MemberService
             return collection.Find(x => x.ID == id).FirstOrDefault();
         }
 
-        public void Update(MemberModel member)
+        public async void Update(MemberModel member)
         {
             IMongoDatabase db = _client.GetDatabase("Member");
             var collection = db.GetCollection<MemberModel>("Members");
 
-            var filter = Builders<MemberModel>.Filter.Eq(s => s.ID, member.ID);
-            var result = collection.ReplaceOneAsync(filter, member).GetAwaiter();
+            await collection.ReplaceOneAsync(x => x.ID == member.ID, member);
         }
 
     }
