@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KarafkaProducer_POC", "Kara
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MemberProducerSync", "MemberProducerSync\MemberProducerSync.csproj", "{1044E67A-A6AD-484B-9A6B-F82A6FE5AE1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventSourcing", "EventSourcing\EventSourcing.csproj", "{4673A7C8-EEA8-4DA9-B869-0604D5258B2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventSourcing", "EventSourcing\EventSourcing.csproj", "{4673A7C8-EEA8-4DA9-B869-0604D5258B2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRS", "CQRS\CQRS.csproj", "{60A1BA31-B9F6-4F0C-9E54-6BD9773079D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRS.MongoDB", "CQRS.MongoDB\CQRS.MongoDB.csproj", "{EEAF838F-D92C-4AD2-B70F-4FF670EC75AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{4673A7C8-EEA8-4DA9-B869-0604D5258B2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4673A7C8-EEA8-4DA9-B869-0604D5258B2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4673A7C8-EEA8-4DA9-B869-0604D5258B2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60A1BA31-B9F6-4F0C-9E54-6BD9773079D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60A1BA31-B9F6-4F0C-9E54-6BD9773079D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60A1BA31-B9F6-4F0C-9E54-6BD9773079D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60A1BA31-B9F6-4F0C-9E54-6BD9773079D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEAF838F-D92C-4AD2-B70F-4FF670EC75AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEAF838F-D92C-4AD2-B70F-4FF670EC75AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEAF838F-D92C-4AD2-B70F-4FF670EC75AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEAF838F-D92C-4AD2-B70F-4FF670EC75AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
