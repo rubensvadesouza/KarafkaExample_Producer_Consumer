@@ -21,19 +21,19 @@ namespace MemberProducerSync.MemberService
             IMongoDatabase db = _client.GetDatabase("Member");
             var collection = db.GetCollection<MemberModel>("Members");
 
-            model.GeneratorDate = DateTime.Now;
+            model.Date = DateTime.Now;
 
             var member = Find(model.ID);
 
             if (member != null)
             {
-                model.EventType = MemberEvents.Create;
+                model.Code = MemberEvents.Create;
                 model._id = member._id;
                 Update(model);
             }
             else
             {
-                model.EventType = MemberEvents.Update;
+                model.Code = MemberEvents.Update;
                 await collection.InsertOneAsync(model);
             }
 

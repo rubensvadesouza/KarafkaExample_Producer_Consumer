@@ -52,9 +52,9 @@ namespace KarafkaConsumer_POC
             switch (baseMessage.Code)
             {
 
-                case ""
-                default:
-                    break;
+                //case ""
+                //default:
+                //    break;
             }
 
 

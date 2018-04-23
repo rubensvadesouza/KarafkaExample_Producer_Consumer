@@ -26,7 +26,7 @@ namespace MemberProducerSync.MemberService
 
         public void InsertOrUpdate(MemberModel model)
         {
-            model.GeneratorDate = DateTime.Now;
+            model.Date = DateTime.Now;
             var sucess = InsertMember(model);
             if (sucess)
             {
@@ -45,12 +45,12 @@ namespace MemberProducerSync.MemberService
 
                 if (isNew)
                 {
-                    model.EventType = MemberEvents.Create;
+                    model.Code = MemberEvents.Create;
                     _repo.Add(e);
                 }
                 else
                 {
-                    model.EventType = MemberEvents.Update;
+                    model.Code = MemberEvents.Update;
                     _repo.Update(e);
                 }
 

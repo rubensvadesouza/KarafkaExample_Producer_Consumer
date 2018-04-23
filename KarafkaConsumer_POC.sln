@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CQRS", "CQRS\CQRS.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CQRS.MongoDB", "CQRS.MongoDB\CQRS.MongoDB.csproj", "{EEAF838F-D92C-4AD2-B70F-4FF670EC75AD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "externalFiles", "externalFiles", "{B593CF8D-EB29-4EDF-9945-66687BCBF594}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
