@@ -8,5 +8,5 @@ using System.Threading.Tasks;
 
 namespace MemberProducerSync.Repository.Interface
 {
-    public interface IMemberRepository : IEntityBaseRepository<MemberEntity> { }
+    public interface IMemberEntityRepository : IEntityBaseRepository<MemberEntity> { }
 }

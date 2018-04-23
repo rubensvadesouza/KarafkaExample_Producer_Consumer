@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace MemberProducerSync.Repository
 {
-    public class MemberRepository : EntityBaseRepository<MemberEntity>, IMemberRepository
+    public class MemberEntityRepository : EntityBaseRepository<MemberEntity>, IMemberEntityRepository
     {
 
-        public MemberRepository(MemberContext context)
+        public MemberEntityRepository(MemberContext context)
             : base(context)
         {
         }

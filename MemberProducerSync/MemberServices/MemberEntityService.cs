@@ -16,12 +16,12 @@ namespace MemberProducerSync.MemberService
 {
     public class MemberSqlService
     {
-        private MemberRepository _repo;
+        private MemberEntityRepository _repo;
 
 
         public MemberSqlService(MemberContext context)
         {
-            _repo = new MemberRepository(context);
+            _repo = new MemberEntityRepository(context);
         }
 
         public void InsertOrUpdate(MemberModel model)
@@ -30,7 +30,7 @@ namespace MemberProducerSync.MemberService
             var sucess = InsertMember(model);
             if (sucess)
             {
-                SendEvent(model);
+                HttpHelper.SendEventMember(model);
             }
         }
 
@@ -62,31 +62,7 @@ namespace MemberProducerSync.MemberService
             }
 
             return true;
-        }
-
-        private void SendEvent(MemberModel member)
-        {
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create($"{ ConfigHelper.Configuration.GetValue<string>("SyncMembers:url")}MemberSync");
-            httpWebRequest.ContentType = "application/json";
-            httpWebRequest.Method = "POST";
-
-            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-            {
-                string json = JsonConvert.SerializeObject(member);
-
-                streamWriter.Write(json);
-                streamWriter.Flush();
-                streamWriter.Close();
-            }
-
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                var result = streamReader.ReadToEnd();
-            }
-        }
-
+        } 
         public MemberEntity GetById(string id)
         {
             return _repo.GetSingle(id);

@@ -18,9 +18,11 @@ namespace MemberProducerSync.Controllers
         private readonly MemberMongoService _service = new MemberMongoService();
 
         [HttpPost]
-        public async Task<IActionResult> Insert([FromBody]MemberModel member)
+        public async Task<IActionResult> Insert([FromBody]MemberModel model)
         {
+            _service.InsertMember(model);
             return Ok();
         }
+
     }
 }

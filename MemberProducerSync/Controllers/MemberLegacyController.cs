@@ -16,11 +16,11 @@ namespace MemberProducerSync.Controllers
     [Route("api/[controller]")]
     public class MemberLegacyController : Controller
     {
-        private readonly MemberSqlService _service;
+        private readonly MemberEntityService _service;
 
         public MemberLegacyController(MemberContext context)
         {
-            _service = new MemberSqlService(context);
+            _service = new MemberEntityService(context);
         }
 
 
