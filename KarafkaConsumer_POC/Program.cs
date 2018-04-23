@@ -50,9 +50,9 @@ namespace KarafkaConsumer_POC
 
             var model = JsonConvert.DeserializeObject<MemberModel>(message.Value);
 
-            InsertMember(model);
-            var member = GetMember();
-            SendRequest(member);
+            //var dto = InsertEvent(model);
+
+            //SendRequest(member);
 
         }
 
@@ -61,14 +61,7 @@ namespace KarafkaConsumer_POC
             //TODO: Disparar API
         }
 
-        private static MemberModel GetMember()
-        {
-            //TODO:Disparar GetEvent
-
-            return new MemberModel();
-        }
-
-        private static void InsertMember(MemberModel model)
+        private static void InsertEvent(MemberModel model)
         {
             //TODO:DispararEnventHandler
         }

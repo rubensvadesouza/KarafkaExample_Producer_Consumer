@@ -11,17 +11,12 @@ namespace MemberProducerSync.Utils
     {
         public static IConfigurationRoot Configuration => GetConfig();
 
-        public static IConfigurationRoot GetConfig()
+        private static IConfigurationRoot GetConfig()
         {
             return new ConfigurationBuilder()
              .SetBasePath(Directory.GetCurrentDirectory())
              .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
              .Build();
-        }
-
-        public static string GetField(string name)
-        {
-            return Configuration[name].ToString();
         }
     }
 }

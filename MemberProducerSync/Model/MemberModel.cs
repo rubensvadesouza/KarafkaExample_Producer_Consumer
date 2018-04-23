@@ -12,7 +12,10 @@ namespace MemberProducerSync.Model
         public long Age { get; set; }
         public string CellNumber { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public List<AddressModel> Addresses { get; set; }
+
+        public string EventType { get; set; }
+
+        public DateTime GeneratorDate { get; set; }
 
     }
 }

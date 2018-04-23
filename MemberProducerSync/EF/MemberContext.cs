@@ -9,10 +9,16 @@ namespace MemberProducerSync.EF
 {
     public class MemberContext : DbContext
     {
-        public MemberContext(DbContextOptions<MemberContext> options) : base(options)
+        public MemberContext()
+        {
+
+        }
+
+        public MemberContext(DbContextOptions<MemberContext> options)
+            : base(options)
         {
         }
 
-        public DbSet<MemberModel> Members { get; set; }
+        public DbSet<MemberEntity> Members { get; set; }
     }
 }

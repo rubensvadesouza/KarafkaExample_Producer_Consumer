@@ -27,8 +27,7 @@ namespace MemberProducerSync
         {
             services.AddMvc();
 
-            services.AddDbContext<MemberContext>(options =>
-                options.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=Legado;Integrated Security=True;MultipleActiveResultSets=True"));
+            services.AddDbContext<MemberContext>(options => options.UseSqlServer(Configuration.GetValue<string>("Sql:connectionString")));
 
             services.AddSwaggerGen(c =>
             {

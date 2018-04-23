@@ -25,7 +25,7 @@ namespace MemberProducerSync.Base
             {
                 using (var producer = new Producer<int, string>(GetConfig(), new IntSerializer(), new StringSerializer(Encoding.UTF8)))
                 {
-                    var ret = producer.ProduceAsync(ConfigHelper.GetField("Karafka:topicName"), key, message).Result;
+                    var ret = producer.ProduceAsync(ConfigHelper.Configuration.GetValue<string>("Karafka:topicName"), key, message).Result;
 
                     if (ret.Error.HasError)
                     {
@@ -45,13 +45,12 @@ namespace MemberProducerSync.Base
         {
             var config = new Dictionary<string, object>
             {
-                { "bootstrap.servers",ConfigHelper.GetField("Karafka:brokers")},
+                { "bootstrap.servers", ConfigHelper.Configuration.GetValue<string>("Karafka:brokers")},
                 { "sasl.mechanisms", "SCRAM-SHA-256" },
                 { "security.protocol", "SASL_SSL" },
-                { "ssl.ca.location", ConfigHelper.GetField("Karafka:caLocation")},
-                { "sasl.username", ConfigHelper.GetField("Karafka:user")},
-                { "sasl.password", ConfigHelper.GetField("Karafka:password") },
-                {"debug","all" }
+                { "ssl.ca.location",ConfigHelper.Configuration.GetValue<string>("Karafka:caLocation")},
+                { "sasl.username", ConfigHelper.Configuration.GetValue<string>("Karafka:user")},
+                { "sasl.password",ConfigHelper.Configuration.GetValue<string>("Karafka:password") },
             };
 
             return config;

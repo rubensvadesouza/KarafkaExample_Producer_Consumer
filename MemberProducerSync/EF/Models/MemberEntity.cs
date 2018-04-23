@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MemberProducerSync.EF.Models
 {
-    public class MemberModel
+    public class MemberEntity : IEntityBase
     {
         public string ID { get; set; }
         public string FullName { get; set; }
