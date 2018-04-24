@@ -1,24 +1,29 @@
-﻿using MemberProducerSync.Model;
+﻿using KarafkaConsumer_POC.Model;
+using MemberProducerSync.Utils;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System;
 using System.IO;
 using System.Net;
 
-namespace MemberProducerSync.Utils
+namespace MemberConsumerSync.Utils
 {
     public static class HttpHelper
     {
-        public static void SendNextMessage(MemberModel member)
-        {
-            var url = $"{ConfigHelper.Configuration.GetValue<string>("SyncMembers:url")}MemberNext";
-            var message = JsonConvert.SerializeObject(member);
+        //public static void SendNextMessage(MemberModel member)
+        //{
+        //    var url = $"{ConfigHelper.Configuration.GetValue<string>("SyncMembers:url")}MemberNext";
+        //    var message = JsonConvert.SerializeObject(member);
 
-            SendMessage(url, message);
-        }
+        //    SendMessage(url, message);
+        //}
 
         public static void SendLegacyMessage(MemberModel member)
         {
-            var url = $"{ConfigHelper.Configuration.GetValue<string>("SyncMembers:url")}MemberLegacy";
+            var url = "http://localhost:55292/api/MemberLegacy";
+            member.RequestDate = DateTime.Now;
+            member.Date = DateTime.Now;
+            member.Code = string.Empty;
             var message = JsonConvert.SerializeObject(member);
 
             SendMessage(url, message);
@@ -27,6 +32,7 @@ namespace MemberProducerSync.Utils
         public static void SendEventMember(MemberModel member)
         {
             var url = $"{ConfigHelper.Configuration.GetValue<string>("SyncMembers:url")}MemberSync";
+            member.RequestDate = DateTime.Now;
             var message = JsonConvert.SerializeObject(member);
 
             SendMessage(url, message);

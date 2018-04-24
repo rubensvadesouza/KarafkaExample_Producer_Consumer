@@ -5,7 +5,6 @@ using MemberProducerSync.Producer.Base;
 using MemberProducerSync.Producers;
 using MemberProducerSync.Repository;
 using MemberProducerSync.Utils;
-using MongoDB.Bson;
 using System;
 using System.Threading.Tasks;
 
@@ -37,7 +36,7 @@ namespace MemberProducerSync.MemberService
         {
             try
             {
-                var e = GetById(model.Id);
+                var e = GetById(model.ID);
                 bool isNew = e == null;
 
                 e = Map(model, e);
@@ -75,7 +74,7 @@ namespace MemberProducerSync.MemberService
         {
             var e = entity ?? new MemberEntity();
 
-            e.ID = member.Id;
+            e.ID = member.ID;
             e.FullName = member.FullName;
             e.DateOfBirth = member.DateOfBirth;
             e.CellNumber = member.CellNumber;

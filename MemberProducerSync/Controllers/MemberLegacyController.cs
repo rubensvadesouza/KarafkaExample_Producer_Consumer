@@ -23,7 +23,8 @@ namespace MemberProducerSync.Controllers
         [HttpPost]
         public IActionResult Insert([FromBody]MemberModel member)
         {
-            _service.InsertOrUpdate(member);
+            if (member != null)
+                _service.InsertOrUpdate(member);
 
             return Ok();
         }

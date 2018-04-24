@@ -1,12 +1,11 @@
 ﻿using MemberProducerSync.Model;
+using MemberProducerSync.Producer.Base;
+using MemberProducerSync.Producers;
 using MemberProducerSync.Utils;
 using Microsoft.Extensions.Configuration;
-using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace MemberProducerSync.MemberService
@@ -15,6 +14,7 @@ namespace MemberProducerSync.MemberService
     {
         private MongoClient _client => new MongoClient(ConfigHelper.Configuration.GetValue<string>("MongoDB:connectionString"));
 
+        private MemberProducer _sync => new MemberProducer(new ConfluentProducer());
 
         public async void InsertMember(MemberModel model)
         {
@@ -23,21 +23,20 @@ namespace MemberProducerSync.MemberService
 
             model.Date = DateTime.Now;
 
-            var member = Find(model.Id);
+            var member = Find(model.ID);
 
             if (member != null)
             {
-                model.Code = MemberEvents.Create;
-                model._id = member._id;
+                model.Code = MemberEvents.Update;
                 Update(model);
             }
             else
             {
-                model.Code = MemberEvents.Update;
+                model.Code = MemberEvents.Create;
                 await collection.InsertOneAsync(model);
             }
 
-            HttpHelper.SendEventMember(model);
+            _sync.Send(model);
         }
 
         public async Task<MemberModel> FindAsync(string id)
@@ -45,7 +44,7 @@ namespace MemberProducerSync.MemberService
             IMongoDatabase db = _client.GetDatabase("Member");
 
             var collection = db.GetCollection<MemberModel>("Members");
-            return await collection.Find(x => x.Id == id).FirstOrDefaultAsync();
+            return await collection.Find(x => x.ID == id).FirstOrDefaultAsync();
         }
 
         public MemberModel Find(string id)
@@ -53,7 +52,7 @@ namespace MemberProducerSync.MemberService
             IMongoDatabase db = _client.GetDatabase("Member");
 
             var collection = db.GetCollection<MemberModel>("Members");
-            return collection.Find(x => x.Id == id).FirstOrDefault();
+            return collection.Find(x => x.ID == id).FirstOrDefault();
         }
 
         public async void Update(MemberModel member)
@@ -61,8 +60,7 @@ namespace MemberProducerSync.MemberService
             IMongoDatabase db = _client.GetDatabase("Member");
             var collection = db.GetCollection<MemberModel>("Members");
 
-            await collection.ReplaceOneAsync(x => x.Id == member.Id, member);
+            await collection.ReplaceOneAsync(x => x.ID == member.ID, member);
         }
-
     }
 }

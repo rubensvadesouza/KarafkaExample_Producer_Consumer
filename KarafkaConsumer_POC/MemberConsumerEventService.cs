@@ -1,17 +1,19 @@
-﻿using System.Threading.Tasks;
-using EventSourcing.Events;
+﻿using EventSourcing.Events;
 using KarafkaConsumer_POC.Contracts.Messages;
 using KarafkaConsumer_POC.Domain.Events;
 using KarafkaConsumer_POC.Domain.Handlers;
+using KarafkaConsumer_POC.Model;
+using MemberConsumerSync.Utils;
 using MongoDB.Bson.Serialization;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace MemberConsumerSync
 {
     public class MemberConsumerEventService
     {
-        MemberCreatedEventHandler _createdHandler;
-        MemberUpdatedEventHandler _updatedHandler;
+        private MemberCreatedEventHandler _createdHandler;
+        private MemberUpdatedEventHandler _updatedHandler;
 
         public MemberConsumerEventService(MemberCreatedEventHandler created, MemberUpdatedEventHandler updated)
         {
@@ -21,8 +23,6 @@ namespace MemberConsumerSync
 
         public async void ProcessMessage(string message)
         {
-
-           //Mapper();
             var baseMessage = JsonConvert.DeserializeObject<BaseMessage>(message);
 
             switch (baseMessage.Code)
@@ -47,7 +47,14 @@ namespace MemberConsumerSync
 
             if (ret)
             {
-                //Do Stuff, map models and call other services
+                var model = new MemberModel();
+                model.ID = msg.LegacyID;
+                model.FullName = msg.FullName;
+                model.Age = msg.Age;
+                model.CellNumber = msg.CellNumber;
+                model.DateOfBirth = msg.DateOfBirth;
+
+                HttpHelper.SendLegacyMessage(model);
             }
         }
 
@@ -58,7 +65,14 @@ namespace MemberConsumerSync
 
             if (ret)
             {
-                //Do Stuff, map models and call other services
+                var model = new MemberModel();
+                model.ID = msg.LegacyID;
+                model.FullName = msg.FullName;
+                model.Age = msg.Age;
+                model.CellNumber = msg.CellNumber;
+                model.DateOfBirth = msg.DateOfBirth;
+
+                HttpHelper.SendLegacyMessage(model);
             }
         }
 

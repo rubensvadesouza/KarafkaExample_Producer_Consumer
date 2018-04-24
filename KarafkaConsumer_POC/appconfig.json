@@ -3,5 +3,9 @@
   "user": "n733uiq5",
   "password": "Eds6fopo8tVEDmpaHewnSJwNBOmUwDfb",
   "caLocation": "ExternalFiles\\certificate.pem",
-  "topicName": "n733uiq5-default"
+  "topicName": "n733uiq5-default",
+
+  "SyncMembers": {
+    "url": "http://localhost:55292/api/"
+  }
 }

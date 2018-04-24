@@ -1,11 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using CQRS.MongoDB;
+﻿using CQRS.MongoDB;
 using KarafkaConsumer_POC.Contracts.Messages;
 using KarafkaConsumer_POC.Domain.Aggregates;
 using KarafkaConsumer_POC.Domain.Commands;
 using KarafkaConsumer_POC.Domain.Events;
 using KarafkaConsumer_POC.Domain.Queries;
+using System.Threading.Tasks;
 
 namespace KarafkaConsumer_POC.Domain.Handlers
 {
@@ -17,19 +16,12 @@ namespace KarafkaConsumer_POC.Domain.Handlers
             _reader = reader;
         }
 
-        MemberUpdatedCommand _command;
-        MemberQueryReader _reader;
+        private MemberUpdatedCommand _command;
+        private MemberQueryReader _reader;
+
         public async Task<bool> HandleMember(MemberUpdatedMessage message)
         {
             var agg = _reader.ReadOneAsync(x => x.Member.LegacyID == message.LegacyID).Result;
-
-            //if(agg != null)
-            //{
-            //    if(agg.Events.Any(x => x.EventDate == message.RequestDate))
-            //    {
-            //        return;
-            //    }
-            //}
 
             if (agg == null)
             {

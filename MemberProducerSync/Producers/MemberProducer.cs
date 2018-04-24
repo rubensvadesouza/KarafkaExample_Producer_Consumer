@@ -47,7 +47,7 @@ namespace MemberProducerSync.Producers
             message.Age = model.Age;
             message.CellNumber = model.CellNumber;
             message.DateOfBirth = model.DateOfBirth;
-            message.LegacyID = model.Id;
+            message.LegacyID = model.ID;
             message.RequestId = model.RequestId;
             message.Code = MemberEvents.Update;
             message.RequestDate = DateTime.Now;
@@ -63,7 +63,7 @@ namespace MemberProducerSync.Producers
             message.Age = model.Age;
             message.CellNumber = model.CellNumber;
             message.DateOfBirth = model.DateOfBirth;
-            message.LegacyID = model.Id;
+            message.LegacyID = model.ID;
             message.RequestId = model.RequestId;
             message.Code = MemberEvents.Create;
             message.RequestDate = DateTime.Now;

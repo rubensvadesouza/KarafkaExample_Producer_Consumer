@@ -5,8 +5,7 @@ namespace MemberProducerSync.Model
 {
     public class MemberModel
     {
-        public ObjectId _id { get; set; }
-        public string Id { get; set; }
+        public string ID { get; set; }
         public string Code { get; set; }
         public string RequestId { get; set; }
         public DateTime RequestDate { get; set; }
