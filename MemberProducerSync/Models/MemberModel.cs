@@ -1,9 +1,9 @@
-﻿using MongoDB.Bson;
+﻿using MemberProducerSync.Base;
 using System;
 
 namespace MemberProducerSync.Model
 {
-    public class MemberModel
+    public class MemberModel : BaseMongo
     {
         public string ID { get; set; }
         public string Code { get; set; }

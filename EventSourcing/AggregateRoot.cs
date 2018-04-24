@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EventSourcing.Events;
 
@@ -36,10 +37,9 @@ namespace EventSourcing.Aggregates
             }            
         }
 
-        public virtual bool HasEvent(TEvent e)
+        public virtual bool HasEvent(Func<TEvent, bool> predicate)
         {
-            if (Events.Any(x => x.RequestID == e.RequestID
-                             && x.EventDate == e.EventDate))
+            if (Events.Any(predicate))
             {
                 return true;
             }

@@ -21,21 +21,21 @@ namespace KarafkaConsumer_POC.Domain.Handlers
 
         public async Task<bool> HandleMember(MemberUpdatedMessage message)
         {
-            var e = new MemberUpdatedEvent(MongoUtils.GenerateNewObjectId(), message.LegacyID, message.FullName, message.Age, message.CellNumber, message.DateOfBirth, message.RequestId, message.RequestDate);
-            var agg = _reader.ReadOneAsync(x => x.Member.LegacyID == message.LegacyID).Result;
+            var agg = _reader.ReadOneAsync(x => x.Member.LegacyID == message.LegacyID)?.Result ?? MemberAggregate.New();
 
-            if (agg == null)
+            if (agg != null && message.Version <= agg.Version
+            && agg.HasEvent(x => x.LegacyID == message.LegacyID
+            && x.FullName == message.FullName
+            && x.Age == message.Age
+            && x.CellNumber == message.CellNumber
+            && x.DateOfBirth == message.DateOfBirth))
             {
-                agg = MemberAggregate.New();
+                return false;
             }
 
             try
             {
-                if (message.Version <= agg.Version && agg.HasEvent(e))
-                {
-                    return false;
-                }
-
+                var e = new MemberUpdatedEvent(MongoUtils.GenerateNewObjectId(), message.LegacyID, message.FullName, message.Age, message.CellNumber, message.DateOfBirth, message.RequestId, message.RequestDate);
                 agg.AddEventToStream(e);
                 agg.RebuildEventStream();
                 agg.CommitChanges();

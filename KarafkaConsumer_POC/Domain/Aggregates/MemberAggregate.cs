@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using EventSourcing.Aggregates;
 using KarafkaConsumer_POC.Domain.Entities;
 using KarafkaConsumer_POC.Domain.Events;
@@ -32,16 +33,10 @@ namespace KarafkaConsumer_POC.Domain.Aggregates
         }
 
         //Checks if an event already exists in the stream
-        public override bool HasEvent(IMemberPersonalInfoEvent e)
+        public override bool HasEvent(Func<IMemberPersonalInfoEvent, bool> predicate)
         {
             //TODO: Implement verification by Event Type
-            if (Events.Any(x => x.LegacyID == e.LegacyID
-                                         && x.FullName == e.FullName
-                                         && x.Age == e.Age
-                                         && x.CellNumber == e.CellNumber
-                                         && x.DateOfBirth == e.DateOfBirth
-                                         && x.RequestID == e.RequestID
-                                         && x.EventDate == e.EventDate))
+            if (Events.Any(predicate))
             {
                 return true;
             }

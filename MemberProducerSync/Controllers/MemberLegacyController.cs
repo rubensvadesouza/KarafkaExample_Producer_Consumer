@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
-using MemberProducerSync.EF;
+﻿using MemberProducerSync.EF;
 using MemberProducerSync.MemberService;
 using MemberProducerSync.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace MemberProducerSync.Controllers
 {
@@ -19,12 +20,12 @@ namespace MemberProducerSync.Controllers
             _service = new MemberEntityService(context);
         }
 
-
         [HttpPost]
-        public IActionResult Insert([FromBody]MemberModel member)
+        public IActionResult Insert([FromBody]string member)
         {
-            if (member != null)
-                _service.InsertOrUpdate(member);
+            var m = JsonConvert.DeserializeObject<MemberModel>(member);
+            if (m != null)
+                _service.InsertOrUpdate(m);
 
             return Ok();
         }

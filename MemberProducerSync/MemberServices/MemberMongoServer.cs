@@ -28,6 +28,7 @@ namespace MemberProducerSync.MemberService
             if (member != null)
             {
                 model.Code = MemberEvents.Update;
+                model._id = member._id;
                 Update(model);
             }
             else
