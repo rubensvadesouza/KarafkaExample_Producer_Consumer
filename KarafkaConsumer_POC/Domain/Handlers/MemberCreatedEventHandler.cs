@@ -27,8 +27,8 @@ namespace KarafkaConsumer_POC.Domain.Handlers
             try
             {
                 var ID = MongoUtils.GenerateNewObjectId();
-                agg.ApplyChange(new MemberCreatedEvent(ID, message.LegacyID, message.FullName, message.Age, message.CellNumber, message.DateOfBirth, message.RequestId, message.RequestDate));
-                agg.RebuildFromEventStream();
+                agg.AddEventToStream(new MemberCreatedEvent(ID, message.LegacyID, message.FullName, message.Age, message.CellNumber, message.DateOfBirth, message.RequestId, message.RequestDate));
+                agg.RebuildEventStream();
                 await _command.AddAsync(agg);
             }
             catch (Exception)

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CQRS.MongoDB;
 using KarafkaConsumer_POC.Contracts.Messages;
 using KarafkaConsumer_POC.Domain.Aggregates;
@@ -23,14 +22,6 @@ namespace KarafkaConsumer_POC.Domain.Handlers
         {
             var agg = _reader.ReadOneAsync(x => x.Member.LegacyID == message.LegacyID).Result;
 
-            //if(agg != null)
-            //{
-            //    if(agg.Events.Any(x => x.EventDate == message.RequestDate))
-            //    {
-            //        return;
-            //    }
-            //}
-
             if (agg == null)
             {
                 agg = MemberAggregate.New();
@@ -39,13 +30,14 @@ namespace KarafkaConsumer_POC.Domain.Handlers
             try
             {
                 var ID = MongoUtils.GenerateNewObjectId();
-                agg.ApplyChange(new MemberUpdatedEvent(ID, message.LegacyID, message.FullName, message.Age, message.CellNumber, message.DateOfBirth, message.RequestId, message.RequestDate));
-                agg.RebuildFromEventStream();
+                agg.AddEventToStream(new MemberUpdatedEvent(ID, message.LegacyID, message.FullName, message.Age, message.CellNumber, message.DateOfBirth, message.RequestId, message.RequestDate));
+                agg.RebuildEventStream();
+                agg.CommitChanges();
                 await _command.UpdateAsync(agg);
             }
             catch
             {
-                //TODO: Handle Exceptions
+                //TODO: Implement retry policy
                 return false;
             }
             return true;

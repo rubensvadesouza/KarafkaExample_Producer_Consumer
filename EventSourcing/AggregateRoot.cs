@@ -1,34 +1,37 @@
-﻿using EventSourcing.Events;
+﻿using System.Collections.Generic;
+using EventSourcing.Events;
 
 namespace EventSourcing.Aggregates
 {
     public abstract class AggregateRoot<TEvent> where TEvent : IEvent
     {
         public string Id { get; set; }
-        private bool _delivered { get; set; }
-        public bool Delivered
-        {
-            get
-            {
-                return _delivered;
-            }
-            set
-            {
-                if (value)
-                {
-                    Version++;
-                }
-                _delivered = value;
-            }
-        }
-        public long Version { get; set; }
+        public virtual List<TEvent> Events { get; set; }
+        private long _version { get; set; }
+        public long Version { get { return _version; } private set { _version++; } }
+        private bool _commited { get; set; }
 
-        public virtual void RebuildFromEventStream()
+        /// <summary>
+        /// Rebuilds the aggregate based on the event stream
+        /// </summary>
+        public virtual void RebuildEventStream()
         {
         }
 
-        public virtual void ApplyChange(TEvent @event)
+
+        public virtual void AddEventToStream(TEvent @event)
         {
+        }
+
+        /// <summary>
+        /// This method increments the current Aggregate version plus one
+        /// </summary>
+        public void CommitChanges()
+        {
+            if (!_commited)
+            {
+                Version++;
+            }            
         }
     }
 }
