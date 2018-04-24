@@ -1,14 +1,16 @@
-﻿using Confluent.Kafka;
-using Confluent.Kafka.Serialization;
-using KarafkaConsumer_POC.Contracts.Messages;
-using KarafkaConsumer_POC.Model;
-using MemberConsumerSync;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Confluent.Kafka;
+using Confluent.Kafka.Serialization;
+using CQRS.MongoDB;
+using KarafkaConsumer_POC.Domain.Commands;
+using KarafkaConsumer_POC.Domain.Handlers;
+using KarafkaConsumer_POC.Domain.Queries;
+using MemberConsumerSync;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace KarafkaConsumer_POC
 {
@@ -17,6 +19,7 @@ namespace KarafkaConsumer_POC
     {
         protected static IConfigurationRoot _config { get; set; }
         protected static MemberConsumerEventService _eventService { get; set; }
+        private static ServiceProvider _services { get; set; }
 
         public static void Main()
         {
@@ -25,7 +28,12 @@ namespace KarafkaConsumer_POC
                          .AddJsonFile("appconfig.json", optional: true, reloadOnChange: true)
                          .Build();
 
-            _eventService = new MemberConsumerEventService();
+            _services = Setup();
+
+            var _cHandler = _services.GetService<MemberCreatedEventHandler>();
+            var uHandler = _services.GetService<MemberUpdatedEventHandler>();
+
+            _eventService = new MemberConsumerEventService(_cHandler, uHandler);
 
 
             var config = GetConfig();
@@ -68,6 +76,17 @@ namespace KarafkaConsumer_POC
 
             return config;
         }
+
+        private static ServiceProvider Setup()
+        {
+            var serviceProvider = new ServiceCollection()
+                                     .AddScoped<MongoProvider>()
+                                     .AddScoped<MemberCreatedCommand>()
+                                     .AddScoped<MemberUpdatedCommand>()
+                                     .AddScoped<MemberQueryReader>();
+
+            return serviceProvider.BuildServiceProvider();
+        }   
     }
 
 

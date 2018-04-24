@@ -1,4 +1,6 @@
-﻿using EventSourcing.Aggregates;
+﻿using System.Collections.Generic;
+using System.Linq;
+using EventSourcing.Aggregates;
 using KarafkaConsumer_POC.Domain.Entities;
 using KarafkaConsumer_POC.Domain.Events;
 using System;
