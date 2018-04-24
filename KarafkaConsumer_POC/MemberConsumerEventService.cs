@@ -4,22 +4,16 @@ using KarafkaConsumer_POC.Contracts.Messages;
 using KarafkaConsumer_POC.Domain.Aggregates;
 using KarafkaConsumer_POC.Domain.Commands;
 using KarafkaConsumer_POC.Domain.Events;
-using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson.Serialization;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MemberConsumerSync
 {
     public class MemberConsumerEventService
     {
-
         public void ProcessMessage(string message)
         {
-
             Mapper();
             var baseMessage = JsonConvert.DeserializeObject<BaseMessage>(message);
 
@@ -40,8 +34,8 @@ namespace MemberConsumerSync
 
         private async Task<string> ProcessAddMessage(string message)
         {
-            var member = JsonConvert.DeserializeObject<AddMemberEvent>(message);
-            var cmd = new MemberCreateCommand(new MongoProvider());
+            var member = JsonConvert.DeserializeObject<MemberCreatedEvent>(message);
+            var cmd = new MemberCreatedCommand(new MongoProvider());
             var agg = MemberAggregate.New();
             agg.ApplyChange(member);
             return await cmd.AddAsync(agg);
@@ -49,8 +43,8 @@ namespace MemberConsumerSync
 
         private async void ProcessUpdateMessage(string message)
         {
-            var member = JsonConvert.DeserializeObject<UpdatePersonalInfoEvent>(message);
-            var cmd = new UpdateMemberCommand(new MongoProvider());
+            var member = JsonConvert.DeserializeObject<MemberUpdatedEvent>(message);
+            var cmd = new MemberUpdatedCommand(new MongoProvider());
             var agg = MemberAggregate.New();
             agg.ApplyChange(member);
             await cmd.UpdateAsync(agg);
@@ -68,9 +62,9 @@ namespace MemberConsumerSync
                 });
             }
 
-            if (!BsonClassMap.IsClassMapRegistered(typeof(AddMemberEvent)))
+            if (!BsonClassMap.IsClassMapRegistered(typeof(MemberCreatedEvent)))
             {
-                BsonClassMap.RegisterClassMap<AddMemberEvent>(x =>
+                BsonClassMap.RegisterClassMap<MemberCreatedEvent>(x =>
                 {
                     x.AutoMap();
                     x.MapProperty(p => p.ID);
@@ -80,13 +74,13 @@ namespace MemberConsumerSync
                     x.MapProperty(p => p.DateOfBirth);
                     x.MapProperty(p => p.EventType);
                     x.MapProperty(p => p.FullName);
-                    x.MapCreator(m => new AddMemberEvent(m.ID, m.LegacyID, m.FullName, m.Age, m.CellNumber, m.DateOfBirth, m.RequestID, m.EventDate));
+                    x.MapCreator(m => new MemberCreatedEvent(m.ID, m.LegacyID, m.FullName, m.Age, m.CellNumber, m.DateOfBirth, m.RequestID, m.EventDate));
                 });
             }
 
-            if (!BsonClassMap.IsClassMapRegistered(typeof(UpdatePersonalInfoEvent)))
+            if (!BsonClassMap.IsClassMapRegistered(typeof(MemberUpdatedEvent)))
             {
-                BsonClassMap.RegisterClassMap<UpdatePersonalInfoEvent>(x =>
+                BsonClassMap.RegisterClassMap<MemberUpdatedEvent>(x =>
                 {
                     x.AutoMap();
                     x.MapProperty(p => p.ID);
@@ -96,7 +90,7 @@ namespace MemberConsumerSync
                     x.MapProperty(p => p.DateOfBirth);
                     x.MapProperty(p => p.EventType);
                     x.MapProperty(p => p.FullName);
-                    x.MapCreator(m => new UpdatePersonalInfoEvent(m.ID, m.LegacyID, m.FullName, m.Age, m.CellNumber, m.DateOfBirth, m.RequestID, m.EventDate));
+                    x.MapCreator(m => new MemberUpdatedEvent(m.ID, m.LegacyID, m.FullName, m.Age, m.CellNumber, m.DateOfBirth, m.RequestID, m.EventDate));
                 });
             }
         }

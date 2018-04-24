@@ -28,7 +28,6 @@ namespace MemberProducerSync
             services.AddMvc();
 
             services.AddDbContext<MemberContext>(options => options.UseSqlServer(Configuration.GetValue<string>("Sql:connectionString")));
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });

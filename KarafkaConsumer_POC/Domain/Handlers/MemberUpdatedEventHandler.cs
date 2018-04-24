@@ -43,7 +43,7 @@ namespace KarafkaConsumer_POC.Domain.Handlers
                 agg.RebuildFromEventStream();
                 await _command.UpdateAsync(agg);
             }
-            catch (Exception ex)
+            catch
             {
                 //TODO: Handle Exceptions
                 return false;

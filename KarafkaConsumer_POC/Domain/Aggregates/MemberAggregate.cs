@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using EventSourcing.Aggregates;
+﻿using EventSourcing.Aggregates;
 using KarafkaConsumer_POC.Domain.Entities;
 using KarafkaConsumer_POC.Domain.Events;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace KarafkaConsumer_POC.Domain.Aggregates
 {
@@ -10,6 +11,7 @@ namespace KarafkaConsumer_POC.Domain.Aggregates
     {
         internal List<IMemberPersonalInfoEvent> Events { get; set; }
         internal Member Member { get; private set; }
+
         public override void RebuildFromEventStream()
         {
             Member = new Member();
