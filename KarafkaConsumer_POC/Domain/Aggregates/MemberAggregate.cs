@@ -31,6 +31,23 @@ namespace KarafkaConsumer_POC.Domain.Aggregates
             Events.Add(@event);
         }
 
+        //Checks if an event already exists in the stream
+        public override bool HasEvent(IMemberPersonalInfoEvent e)
+        {
+            //TODO: Implement verification by Event Type
+            if (Events.Any(x => x.LegacyID == e.LegacyID
+                                         && x.FullName == e.FullName
+                                         && x.Age == e.Age
+                                         && x.CellNumber == e.CellNumber
+                                         && x.DateOfBirth == e.DateOfBirth
+                                         && x.RequestID == e.RequestID
+                                         && x.EventDate == e.EventDate))
+            {
+                return true;
+            }
+            return false;
+        }
+
         public static MemberAggregate New() => new MemberAggregate { Events = new List<IMemberPersonalInfoEvent>() };
     }
 }
