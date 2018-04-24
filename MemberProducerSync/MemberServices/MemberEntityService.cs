@@ -5,14 +5,8 @@ using MemberProducerSync.Producer.Base;
 using MemberProducerSync.Producers;
 using MemberProducerSync.Repository;
 using MemberProducerSync.Utils;
-using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace MemberProducerSync.MemberService
@@ -23,7 +17,6 @@ namespace MemberProducerSync.MemberService
 
         private MemberProducer _sync;
 
-
         public MemberEntityService(MemberContext context)
         {
             _repo = new MemberEntityRepository(context);
@@ -33,8 +26,6 @@ namespace MemberProducerSync.MemberService
         public void InsertOrUpdate(MemberModel model)
         {
             model.Date = DateTime.Now;
-            if (string.IsNullOrEmpty(model.LegacyID))
-                model.LegacyID = ObjectId.GenerateNewId().ToString();
             var sucess = InsertMember(model);
             if (sucess)
             {
@@ -46,10 +37,10 @@ namespace MemberProducerSync.MemberService
         {
             try
             {
-                var e = GetById(model.LegacyID);
+                var e = GetById(model.Id);
                 bool isNew = e == null;
 
-                e = Map(model);
+                e = Map(model, e);
 
                 if (isNew)
                 {
@@ -61,16 +52,15 @@ namespace MemberProducerSync.MemberService
                     model.Code = MemberEvents.Update;
                     _repo.Update(e);
                 }
-
-                _repo.Commit();
             }
-            catch
+            catch (Exception ex)
             {
                 return false;
             }
 
             return true;
         }
+
         public MemberEntity GetById(string id)
         {
             return _repo.GetSingle(id);
@@ -85,7 +75,7 @@ namespace MemberProducerSync.MemberService
         {
             var e = entity ?? new MemberEntity();
 
-            e.ID = member.LegacyID;
+            e.ID = member.Id;
             e.FullName = member.FullName;
             e.DateOfBirth = member.DateOfBirth;
             e.CellNumber = member.CellNumber;
@@ -93,7 +83,5 @@ namespace MemberProducerSync.MemberService
 
             return e;
         }
-
-
     }
 }

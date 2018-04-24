@@ -23,7 +23,7 @@ namespace MemberProducerSync.MemberService
 
             model.Date = DateTime.Now;
 
-            var member = Find(model.LegacyID);
+            var member = Find(model.Id);
 
             if (member != null)
             {
@@ -45,7 +45,7 @@ namespace MemberProducerSync.MemberService
             IMongoDatabase db = _client.GetDatabase("Member");
 
             var collection = db.GetCollection<MemberModel>("Members");
-            return await collection.Find(x => x.LegacyID == id).FirstOrDefaultAsync();
+            return await collection.Find(x => x.Id == id).FirstOrDefaultAsync();
         }
 
         public MemberModel Find(string id)
@@ -53,7 +53,7 @@ namespace MemberProducerSync.MemberService
             IMongoDatabase db = _client.GetDatabase("Member");
 
             var collection = db.GetCollection<MemberModel>("Members");
-            return collection.Find(x => x.LegacyID == id).FirstOrDefault();
+            return collection.Find(x => x.Id == id).FirstOrDefault();
         }
 
         public async void Update(MemberModel member)
@@ -61,7 +61,7 @@ namespace MemberProducerSync.MemberService
             IMongoDatabase db = _client.GetDatabase("Member");
             var collection = db.GetCollection<MemberModel>("Members");
 
-            await collection.ReplaceOneAsync(x => x.LegacyID == member.LegacyID, member);
+            await collection.ReplaceOneAsync(x => x.Id == member.Id, member);
         }
 
     }

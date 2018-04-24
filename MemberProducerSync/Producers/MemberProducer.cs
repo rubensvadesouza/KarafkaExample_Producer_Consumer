@@ -5,15 +5,11 @@ using MemberProducerSync.Producer.Base;
 using MemberProducerSync.Producers.Base;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MemberProducerSync.Producers
 {
     public class MemberProducer
     {
-
         protected IProducer _producer;
 
         public MemberProducer()
@@ -51,11 +47,12 @@ namespace MemberProducerSync.Producers
             message.Age = model.Age;
             message.CellNumber = model.CellNumber;
             message.DateOfBirth = model.DateOfBirth;
-            message.LegacyID = model.LegacyID;
+            message.LegacyID = model.Id;
             message.RequestId = model.RequestId;
+            message.Code = MemberEvents.Update;
             message.RequestDate = DateTime.Now;
 
-            _producer.Send(1, JsonConvert.SerializeObject(model));
+            _producer.Send(1, JsonConvert.SerializeObject(message));
         }
 
         public void SendInsert(MemberModel model)
@@ -66,12 +63,12 @@ namespace MemberProducerSync.Producers
             message.Age = model.Age;
             message.CellNumber = model.CellNumber;
             message.DateOfBirth = model.DateOfBirth;
-            message.LegacyID = model.LegacyID;
+            message.LegacyID = model.Id;
             message.RequestId = model.RequestId;
+            message.Code = MemberEvents.Create;
             message.RequestDate = DateTime.Now;
 
-            _producer.Send(1, JsonConvert.SerializeObject(model));
+            _producer.Send(1, JsonConvert.SerializeObject(message));
         }
-
     }
 }

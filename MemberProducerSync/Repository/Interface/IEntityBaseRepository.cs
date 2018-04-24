@@ -22,6 +22,5 @@ namespace MemberProducerSync.Repository.Interface
         void Update(T entity);
         void Delete(T entity);
         void DeleteWhere(Expression<Func<T, bool>> predicate);
-        void Commit();
     }
 }

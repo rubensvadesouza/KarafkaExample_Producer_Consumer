@@ -14,15 +14,17 @@ namespace MemberProducerSync.Repository.Base
     public class EntityBaseRepository<T> : IEntityBaseRepository<T>
             where T : class, IEntityBase, new()
     {
-
         private MemberContext _context;
 
         #region Properties
+
         public EntityBaseRepository(MemberContext context)
         {
             _context = context;
         }
-        #endregion
+
+        #endregion Properties
+
         public virtual IEnumerable<T> GetAll()
         {
             return _context.Set<T>().AsEnumerable();
@@ -32,6 +34,7 @@ namespace MemberProducerSync.Repository.Base
         {
             return _context.Set<T>().Count();
         }
+
         public virtual IEnumerable<T> AllIncluding(params Expression<Func<T, object>>[] includeProperties)
         {
             IQueryable<T> query = _context.Set<T>();
@@ -75,15 +78,16 @@ namespace MemberProducerSync.Repository.Base
 
         public virtual void Add(T entity)
         {
-            EntityEntry dbEntityEntry = _context.Entry<T>(entity);
             _context.Set<T>().Add(entity);
+            _context.SaveChanges();
         }
 
         public virtual void Update(T entity)
         {
-            EntityEntry dbEntityEntry = _context.Entry<T>(entity);
-            dbEntityEntry.State = EntityState.Modified;
+            _context.Set<T>().Update(entity);
+            _context.SaveChanges();
         }
+
         public virtual void Delete(T entity)
         {
             EntityEntry dbEntityEntry = _context.Entry<T>(entity);
@@ -98,11 +102,6 @@ namespace MemberProducerSync.Repository.Base
             {
                 _context.Entry<T>(entity).State = EntityState.Deleted;
             }
-        }
-
-        public virtual void Commit()
-        {
-            _context.SaveChanges();
         }
     }
 }
