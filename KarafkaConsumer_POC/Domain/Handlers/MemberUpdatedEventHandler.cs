@@ -21,6 +21,7 @@ namespace KarafkaConsumer_POC.Domain.Handlers
 
         public async Task<bool> HandleMember(MemberUpdatedMessage message)
         {
+            var e = new MemberUpdatedEvent(MongoUtils.GenerateNewObjectId(), message.LegacyID, message.FullName, message.Age, message.CellNumber, message.DateOfBirth, message.RequestId, message.RequestDate);
             var agg = _reader.ReadOneAsync(x => x.Member.LegacyID == message.LegacyID).Result;
 
             if (agg == null)
@@ -30,14 +31,19 @@ namespace KarafkaConsumer_POC.Domain.Handlers
 
             try
             {
-                var ID = MongoUtils.GenerateNewObjectId();
-                agg.ApplyChange(new MemberUpdatedEvent(ID, message.LegacyID, message.FullName, message.Age, message.CellNumber, message.DateOfBirth, message.RequestId, message.RequestDate));
-                agg.RebuildFromEventStream();
+                if (message.Version <= agg.Version && agg.HasEvent(e))
+                {
+                    return false;
+                }
+
+                agg.AddEventToStream(e);
+                agg.RebuildEventStream();
+                agg.CommitChanges();
                 await _command.UpdateAsync(agg);
             }
             catch
             {
-                //TODO: Handle Exceptions
+                //TODO: Implement retry policy
                 return false;
             }
             return true;

@@ -1,10 +1,10 @@
-﻿using KarafkaConsumer_POC.Contracts.Messages;
+﻿using System;
+using KarafkaConsumer_POC.Contracts.Messages;
 using KarafkaConsumer_POC.Domain.Events;
 using MemberProducerSync.Model;
 using MemberProducerSync.Producer.Base;
 using MemberProducerSync.Producers.Base;
 using Newtonsoft.Json;
-using System;
 
 namespace MemberProducerSync.Producers
 {

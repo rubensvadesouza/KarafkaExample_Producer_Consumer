@@ -1,20 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EventSourcing.Aggregates;
 using KarafkaConsumer_POC.Domain.Entities;
 using KarafkaConsumer_POC.Domain.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace KarafkaConsumer_POC.Domain.Aggregates
 {
     public class MemberAggregate : AggregateRoot<IMemberPersonalInfoEvent>
     {
-        public List<IMemberPersonalInfoEvent> Events { get; set; }
         public Member Member { get; private set; }
 
-        public override void RebuildFromEventStream()
+        public override void RebuildEventStream()
         {
             Member = new Member();
 
@@ -29,9 +26,26 @@ namespace KarafkaConsumer_POC.Domain.Aggregates
             });
         }
 
-        public override void ApplyChange(IMemberPersonalInfoEvent @event)
+        public override void AddEventToStream(IMemberPersonalInfoEvent @event)
         {
             Events.Add(@event);
+        }
+
+        //Checks if an event already exists in the stream
+        public override bool HasEvent(IMemberPersonalInfoEvent e)
+        {
+            //TODO: Implement verification by Event Type
+            if (Events.Any(x => x.LegacyID == e.LegacyID
+                                         && x.FullName == e.FullName
+                                         && x.Age == e.Age
+                                         && x.CellNumber == e.CellNumber
+                                         && x.DateOfBirth == e.DateOfBirth
+                                         && x.RequestID == e.RequestID
+                                         && x.EventDate == e.EventDate))
+            {
+                return true;
+            }
+            return false;
         }
 
         public static MemberAggregate New() => new MemberAggregate { Events = new List<IMemberPersonalInfoEvent>() };
