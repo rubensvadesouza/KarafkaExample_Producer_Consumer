@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CQRS.MongoDB;
 using KarafkaConsumer_POC.Contracts.Messages;
 using KarafkaConsumer_POC.Domain.Aggregates;
@@ -21,6 +20,7 @@ namespace KarafkaConsumer_POC.Domain.Handlers
         MemberQueryReader _reader;
         public async Task<bool> HandleMember(MemberUpdatedMessage message)
         {
+            var e = new MemberUpdatedEvent(MongoUtils.GenerateNewObjectId(), message.LegacyID, message.FullName, message.Age, message.CellNumber, message.DateOfBirth, message.RequestId, message.RequestDate);
             var agg = _reader.ReadOneAsync(x => x.Member.LegacyID == message.LegacyID).Result;
 
             if (agg == null)
@@ -30,10 +30,7 @@ namespace KarafkaConsumer_POC.Domain.Handlers
 
             try
             {
-                var ID = MongoUtils.GenerateNewObjectId();
-                var e = new MemberUpdatedEvent(ID, message.LegacyID, message.FullName, message.Age, message.CellNumber, message.DateOfBirth, message.RequestId, message.RequestDate);
-
-                if (agg.HasEvent(e))
+                if (message.Version <= agg.Version && agg.HasEvent(e))
                 {
                     return true;
                 }

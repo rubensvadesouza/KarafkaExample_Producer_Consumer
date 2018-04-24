@@ -7,6 +7,7 @@ namespace KarafkaConsumer_POC.Contracts.Messages
         string LegacyID { get; set; }
         string Code { get; set; }
         string RequestId { get; set; }
+        long Version { get; set; }
         DateTime RequestDate { get; set; }
     }
 }

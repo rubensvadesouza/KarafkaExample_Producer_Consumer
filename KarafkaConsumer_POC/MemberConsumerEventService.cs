@@ -21,8 +21,6 @@ namespace MemberConsumerSync
 
         public async void ProcessMessage(string message)
         {
-
-           //Mapper();
             var baseMessage = JsonConvert.DeserializeObject<BaseMessage>(message);
 
             switch (baseMessage.Code)
