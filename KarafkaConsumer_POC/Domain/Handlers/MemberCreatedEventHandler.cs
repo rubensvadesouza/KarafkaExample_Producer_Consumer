@@ -28,7 +28,7 @@ namespace KarafkaConsumer_POC.Domain.Handlers
             if (agg != null && message.Version <= agg.Version
             && agg.HasEvent(e))
             {
-                return true;
+                return false;
             }
             else if (agg == null)
             {

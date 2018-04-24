@@ -32,7 +32,7 @@ namespace KarafkaConsumer_POC.Domain.Handlers
             {
                 if (message.Version <= agg.Version && agg.HasEvent(e))
                 {
-                    return true;
+                    return false;
                 }
 
                 agg.AddEventToStream(e);
