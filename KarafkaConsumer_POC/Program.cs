@@ -1,20 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using Confluent.Kafka;
+﻿using Confluent.Kafka;
 using Confluent.Kafka.Serialization;
 using CQRS.MongoDB;
+using EventSourcing.Events;
 using KarafkaConsumer_POC.Domain.Commands;
+using KarafkaConsumer_POC.Domain.Events;
 using KarafkaConsumer_POC.Domain.Handlers;
 using KarafkaConsumer_POC.Domain.Queries;
 using MemberConsumerSync;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Bson.Serialization;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace KarafkaConsumer_POC
 {
-
     public class Program
     {
         protected static IConfigurationRoot _config { get; set; }
@@ -27,6 +29,7 @@ namespace KarafkaConsumer_POC
                          .SetBasePath(Directory.GetCurrentDirectory())
                          .AddJsonFile("appconfig.json", optional: true, reloadOnChange: true)
                          .Build();
+            Mapper();
 
             _services = Setup();
 
@@ -35,9 +38,7 @@ namespace KarafkaConsumer_POC
 
             _eventService = new MemberConsumerEventService(_cHandler, uHandler);
 
-
             var config = GetConfig();
-
 
             using (var consumer = new Consumer<int, string>(config, new IntDeserializer(), new StringDeserializer(Encoding.UTF8)))
             {
@@ -81,13 +82,58 @@ namespace KarafkaConsumer_POC
         {
             var serviceProvider = new ServiceCollection()
                                      .AddScoped<MongoProvider>()
+                                     .AddScoped<MemberCreatedEventHandler>()
+                                     .AddScoped<MemberUpdatedEventHandler>()
                                      .AddScoped<MemberCreatedCommand>()
                                      .AddScoped<MemberUpdatedCommand>()
                                      .AddScoped<MemberQueryReader>();
 
             return serviceProvider.BuildServiceProvider();
-        }   
+        }
+
+        private static void Mapper()
+        {
+            if (!BsonClassMap.IsClassMapRegistered(typeof(Event)))
+            {
+                BsonClassMap.RegisterClassMap<Event>(x =>
+                {
+                    x.AutoMap();
+                    x.MapProperty(p => p.RequestID);
+                    x.MapProperty(p => p.EventDate);
+                });
+            }
+
+            if (!BsonClassMap.IsClassMapRegistered(typeof(MemberCreatedEvent)))
+            {
+                BsonClassMap.RegisterClassMap<MemberCreatedEvent>(x =>
+                {
+                    x.AutoMap();
+                    x.MapProperty(p => p.ID);
+                    x.MapProperty(p => p.LegacyID);
+                    x.MapProperty(p => p.Age);
+                    x.MapProperty(p => p.CellNumber);
+                    x.MapProperty(p => p.DateOfBirth);
+                    x.MapProperty(p => p.EventType);
+                    x.MapProperty(p => p.FullName);
+                    x.MapCreator(m => new MemberCreatedEvent(m.ID, m.LegacyID, m.FullName, m.Age, m.CellNumber, m.DateOfBirth, m.RequestID, m.EventDate));
+                });
+            }
+
+            if (!BsonClassMap.IsClassMapRegistered(typeof(MemberUpdatedEvent)))
+            {
+                BsonClassMap.RegisterClassMap<MemberUpdatedEvent>(x =>
+                {
+                    x.AutoMap();
+                    x.MapProperty(p => p.ID);
+                    x.MapProperty(p => p.LegacyID);
+                    x.MapProperty(p => p.Age);
+                    x.MapProperty(p => p.CellNumber);
+                    x.MapProperty(p => p.DateOfBirth);
+                    x.MapProperty(p => p.EventType);
+                    x.MapProperty(p => p.FullName);
+                    x.MapCreator(m => new MemberUpdatedEvent(m.ID, m.LegacyID, m.FullName, m.Age, m.CellNumber, m.DateOfBirth, m.RequestID, m.EventDate));
+                });
+            }
+        }
     }
-
-
 }

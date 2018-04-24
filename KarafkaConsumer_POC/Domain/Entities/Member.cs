@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace KarafkaConsumer_POC.Domain.Entities
 {
-    internal class Member
+    public class Member
     {
         public string ID { get; set; }
         public string LegacyID { get; set; }
@@ -16,7 +16,7 @@ namespace KarafkaConsumer_POC.Domain.Entities
         public Member() { }
     }
 
-    internal class Address
+    public class Address
     {
         public string ID { get; set; }
         public string MemberID { get; set; }

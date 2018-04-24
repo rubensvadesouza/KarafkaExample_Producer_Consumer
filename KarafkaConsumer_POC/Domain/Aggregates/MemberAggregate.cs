@@ -11,8 +11,8 @@ namespace KarafkaConsumer_POC.Domain.Aggregates
 {
     public class MemberAggregate : AggregateRoot<IMemberPersonalInfoEvent>
     {
-        internal List<IMemberPersonalInfoEvent> Events { get; set; }
-        internal Member Member { get; private set; }
+        public List<IMemberPersonalInfoEvent> Events { get; set; }
+        public Member Member { get; private set; }
 
         public override void RebuildFromEventStream()
         {

@@ -1,7 +1,8 @@
-﻿using System.Threading.Tasks;
-using EventSourcing.Aggregates;
+﻿using EventSourcing.Aggregates;
 using EventSourcing.Events;
 using MongoDB.Bson;
+using System;
+using System.Threading.Tasks;
 
 namespace CQRS.MongoDB
 {
@@ -13,11 +14,19 @@ namespace CQRS.MongoDB
         {
             _provider = provider;
         }
+
         public async virtual Task<string> AddAsync(TAggregate aggregate)
         {
-            aggregate.Id = ObjectId.GenerateNewId().ToString();
-            await _provider.Collection<TAggregate, TEvent>().InsertOneAsync(aggregate);
-            return aggregate.Id.ToString();
+            try
+            {
+                aggregate.Id = ObjectId.GenerateNewId().ToString();
+                await _provider.Collection<TAggregate, TEvent>().InsertOneAsync(aggregate);
+                return aggregate.Id.ToString();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }
