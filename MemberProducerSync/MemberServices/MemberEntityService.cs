@@ -79,6 +79,7 @@ namespace MemberProducerSync.MemberService
             e.DateOfBirth = member.DateOfBirth;
             e.CellNumber = member.CellNumber;
             e.Age = member.Age;
+            e.Version = member.Version;
 
             return e;
         }

@@ -10,6 +10,6 @@ namespace MemberProducerSync.EF.Models
         public string CellNumber { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string ID { get; set; }
-
+        public long Version { get; set; }
     }
 }

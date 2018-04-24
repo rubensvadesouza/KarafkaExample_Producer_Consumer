@@ -50,7 +50,8 @@ namespace MemberProducerSync.Producers
             message.LegacyID = model.ID;
             message.RequestId = model.RequestId;
             message.Code = MemberEvents.Update;
-            message.RequestDate = DateTime.Now;
+            message.RequestDate =  model.RequestDate;
+            message.Version = model.Version;
 
             _producer.Send(1, JsonConvert.SerializeObject(message));
         }
@@ -66,7 +67,8 @@ namespace MemberProducerSync.Producers
             message.LegacyID = model.ID;
             message.RequestId = model.RequestId;
             message.Code = MemberEvents.Create;
-            message.RequestDate = DateTime.Now;
+            message.RequestDate = model.RequestDate;
+            message.Version = model.Version;
 
             _producer.Send(1, JsonConvert.SerializeObject(message));
         }

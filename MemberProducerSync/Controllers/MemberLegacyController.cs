@@ -3,7 +3,6 @@ using MemberProducerSync.MemberService;
 using MemberProducerSync.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace MemberProducerSync.Controllers
@@ -21,11 +20,10 @@ namespace MemberProducerSync.Controllers
         }
 
         [HttpPost]
-        public IActionResult Insert([FromBody]string member)
+        public IActionResult Insert([FromBody]MemberModel member)
         {
-            var m = JsonConvert.DeserializeObject<MemberModel>(member);
-            if (m != null)
-                _service.InsertOrUpdate(m);
+            if (member != null)
+                _service.InsertOrUpdate(member);
 
             return Ok();
         }

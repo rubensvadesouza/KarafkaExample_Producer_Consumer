@@ -10,6 +10,8 @@ namespace KarafkaConsumer_POC.Domain.Handlers
 {
     public class MemberUpdatedEventHandler
     {
+        public long Version { get; set; }
+
         public MemberUpdatedEventHandler(MemberUpdatedCommand command, MemberQueryReader reader)
         {
             _command = command;
@@ -23,12 +25,15 @@ namespace KarafkaConsumer_POC.Domain.Handlers
         {
             var agg = _reader.ReadOneAsync(x => x.Member.LegacyID == message.LegacyID)?.Result ?? MemberAggregate.New();
 
-            if (agg != null && message.Version <= agg.Version
-            && agg.HasEvent(x => x.LegacyID == message.LegacyID
-            && x.FullName == message.FullName
-            && x.Age == message.Age
-            && x.CellNumber == message.CellNumber
-            && x.DateOfBirth == message.DateOfBirth))
+            bool naoProcessa = agg != null;
+            naoProcessa &= message.Version <= agg.Version;
+            naoProcessa &= agg.HasEvent(x => x.LegacyID == message.LegacyID
+                            && x.FullName == message.FullName
+                            && x.Age == message.Age
+                            && x.CellNumber == message.CellNumber
+                            && x.DateOfBirth == message.DateOfBirth.ToLocalTime());
+
+            if (naoProcessa)
             {
                 return false;
             }
@@ -39,6 +44,7 @@ namespace KarafkaConsumer_POC.Domain.Handlers
                 agg.AddEventToStream(e);
                 agg.RebuildEventStream();
                 agg.CommitChanges();
+                Version = agg.Version;
                 await _command.UpdateAsync(agg);
             }
             catch

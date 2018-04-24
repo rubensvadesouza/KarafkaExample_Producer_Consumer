@@ -14,5 +14,7 @@ namespace MemberProducerSync.Model
         public string CellNumber { get; set; }
         public DateTime DateOfBirth { get; set; }
         public DateTime Date { get; set; }
+
+        public long Version { get; set; }
     }
 }

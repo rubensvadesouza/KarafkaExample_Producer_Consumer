@@ -10,6 +10,7 @@ using MemberConsumerSync;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -133,6 +134,11 @@ namespace KarafkaConsumer_POC
                     x.MapProperty(p => p.FullName);
                     x.MapCreator(m => new MemberUpdatedEvent(m.ID, m.LegacyID, m.FullName, m.Age, m.CellNumber, m.DateOfBirth, m.RequestID, m.EventDate));
                 });
+            }
+
+            if (!BsonSerializer.IsTypeDiscriminated(typeof(DateTimeSerializer)))
+            {
+                BsonSerializer.RegisterSerializer(typeof(DateTime), new DateTimeSerializer(DateTimeKind.Local));
             }
         }
     }

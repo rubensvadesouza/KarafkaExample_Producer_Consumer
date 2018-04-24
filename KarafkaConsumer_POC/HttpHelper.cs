@@ -1,8 +1,5 @@
 ﻿using KarafkaConsumer_POC.Model;
-using MemberProducerSync.Utils;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using System;
 using System.IO;
 using System.Net;
 
@@ -10,32 +7,20 @@ namespace MemberConsumerSync.Utils
 {
     public static class HttpHelper
     {
-        //public static void SendNextMessage(MemberModel member)
-        //{
-        //    var url = $"{ConfigHelper.Configuration.GetValue<string>("SyncMembers:url")}MemberNext";
-        //    var message = JsonConvert.SerializeObject(member);
-
-        //    SendMessage(url, message);
-        //}
-
         public static void SendLegacyMessage(MemberModel member)
         {
+            var msg = JsonConvert.SerializeObject(member);
             var url = "http://localhost:55292/api/MemberLegacy";
-            member.RequestDate = DateTime.Now;
-            member.Date = DateTime.Now;
-            member.Code = string.Empty;
-            var message = JsonConvert.SerializeObject(member);
 
-            SendMessage(url, message);
+            SendMessage(url, msg);
         }
 
-        public static void SendEventMember(MemberModel member)
+        public static void SendNextMessage(MemberModel member)
         {
-            var url = $"{ConfigHelper.Configuration.GetValue<string>("SyncMembers:url")}MemberSync";
-            member.RequestDate = DateTime.Now;
-            var message = JsonConvert.SerializeObject(member);
+            var msg = JsonConvert.SerializeObject(member);
+            var url = "http://localhost:55292/api/MemberNext";
 
-            SendMessage(url, message);
+            SendMessage(url, msg);
         }
 
         private static void SendMessage(string url, string message)
@@ -46,9 +31,7 @@ namespace MemberConsumerSync.Utils
 
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
-                string json = JsonConvert.SerializeObject(message);
-
-                streamWriter.Write(json);
+                streamWriter.Write(message);
                 streamWriter.Flush();
                 streamWriter.Close();
             }
