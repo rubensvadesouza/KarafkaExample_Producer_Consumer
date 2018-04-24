@@ -15,6 +15,7 @@ namespace KarafkaConsumer_POC.Domain.Aggregates
         public override void RebuildFromEventStream()
         {
             Member = new Member();
+
             Events.OrderBy(x => x.EventDate).ToList().ForEach(x =>
             {
                 if (!string.IsNullOrWhiteSpace(x.ID)) { Member.ID = x.ID; }
