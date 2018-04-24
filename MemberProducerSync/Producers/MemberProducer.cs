@@ -45,7 +45,7 @@ namespace MemberProducerSync.Producers
 
         public void SendUpdate(MemberModel model)
         {
-            var message = new UpdateMemberInfoMessage();
+            var message = new MemberUpdatedMessage();
 
             message.FullName = model.FullName;
             message.Age = model.Age;
