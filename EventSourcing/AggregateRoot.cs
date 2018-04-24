@@ -31,6 +31,7 @@ namespace EventSourcing.Aggregates
             if (!_commited)
             {
                 Version++;
+                _commited = true;
             }            
         }
     }
