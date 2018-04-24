@@ -2,6 +2,6 @@
   "brokers": "omnibus-01.srvs.cloudkafka.com:9094,omnibus-02.srvs.cloudkafka.com:9094,omnibus-03.srvs.cloudkafka.com:9094",
   "user": "n733uiq5",
   "password": "Eds6fopo8tVEDmpaHewnSJwNBOmUwDfb",
-  "caLocation": "ExternalFiles\\cacert.pem",
+  "caLocation": "ExternalFiles\\certificate.pem",
   "topicName": "n733uiq5-default"
 }
