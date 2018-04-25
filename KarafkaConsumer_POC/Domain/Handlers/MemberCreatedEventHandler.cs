@@ -5,6 +5,7 @@ using KarafkaConsumer_POC.Domain.Commands;
 using KarafkaConsumer_POC.Domain.Events;
 using KarafkaConsumer_POC.Domain.Queries;
 using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace KarafkaConsumer_POC.Domain.Handlers
@@ -24,11 +25,25 @@ namespace KarafkaConsumer_POC.Domain.Handlers
 
         public async Task<bool> HandleMember(AddMemberMessage message)
         {
-            var agg = _reader.ReadOneAsync(x => x.Member.LegacyID == message.LegacyID)?.Result ?? MemberAggregate.New();
+            MemberAggregate agg;
+
+            if(message.Source == 0)
+            {
+                agg = _reader.ReadOneAsync(x => x.Member.ID == message.ID)?.Result ?? MemberAggregate.New();
+            }
+            else if(message.Source == 1)
+            {
+                agg = _reader.ReadOneAsync(x => x.Member.LegacyID == message.LegacyID)?.Result ?? MemberAggregate.New();
+            }
+            else
+            {
+                agg = MemberAggregate.New();
+            }
 
             bool naoProcessa = agg != null;
             naoProcessa &= message.Version <= agg.Version;
             naoProcessa &= agg.HasEvent(x => x.LegacyID == message.LegacyID
+                            && x.ID == message.ID
                             && x.FullName == message.FullName
                             && x.Age == message.Age
                             && x.CellNumber == message.CellNumber
@@ -41,7 +56,7 @@ namespace KarafkaConsumer_POC.Domain.Handlers
 
             try
             {
-                var e = new MemberCreatedEvent(MongoUtils.GenerateNewObjectId(), message.LegacyID, message.FullName, message.Age, message.CellNumber, message.DateOfBirth, message.RequestId, message.RequestDate);
+                var e = new MemberCreatedEvent(message.ID, message.LegacyID, message.FullName, message.Age, message.CellNumber, message.DateOfBirth, message.RequestId, message.RequestDate);
                 agg.AddEventToStream(e);
                 agg.RebuildEventStream();
                 agg.CommitChanges();

@@ -23,12 +23,26 @@ namespace KarafkaConsumer_POC.Domain.Handlers
 
         public async Task<bool> HandleMember(MemberUpdatedMessage message)
         {
-            var agg = _reader.ReadOneAsync(x => x.Member.LegacyID == message.LegacyID)?.Result ?? MemberAggregate.New();
+            MemberAggregate agg;
+
+            if (message.Source == 0)
+            {
+                agg = _reader.ReadOneAsync(x => x.Member.ID == message.ID)?.Result ?? MemberAggregate.New();
+            }
+            else if (message.Source == 1)
+            {
+                agg = _reader.ReadOneAsync(x => x.Member.LegacyID == message.LegacyID)?.Result ?? MemberAggregate.New();
+            }
+            else
+            {
+                agg = MemberAggregate.New();
+            }
 
             bool naoProcessa = agg != null;
             naoProcessa &= message.Version <= agg.Version;
             naoProcessa &= agg.HasEvent(x => x.LegacyID == message.LegacyID
                             && x.FullName == message.FullName
+                            && x.ID == message.ID
                             && x.Age == message.Age
                             && x.CellNumber == message.CellNumber
                             && x.DateOfBirth == message.DateOfBirth.ToLocalTime());
@@ -40,7 +54,7 @@ namespace KarafkaConsumer_POC.Domain.Handlers
 
             try
             {
-                var e = new MemberUpdatedEvent(MongoUtils.GenerateNewObjectId(), message.LegacyID, message.FullName, message.Age, message.CellNumber, message.DateOfBirth, message.RequestId, message.RequestDate);
+                var e = new MemberUpdatedEvent(message.ID, message.LegacyID, message.FullName, message.Age, message.CellNumber, message.DateOfBirth, message.RequestId, message.RequestDate);
                 agg.AddEventToStream(e);
                 agg.RebuildEventStream();
                 agg.CommitChanges();

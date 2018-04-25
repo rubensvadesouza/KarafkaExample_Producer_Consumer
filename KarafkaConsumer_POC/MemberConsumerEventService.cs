@@ -52,13 +52,15 @@ namespace MemberConsumerSync
                 model.CellNumber = msg.CellNumber;
                 model.DateOfBirth = msg.DateOfBirth;
                 model.RequestDate = msg.RequestDate;
+                model.RequestId = msg.RequestId;
                 model.Date = msg.RequestDate;
                 model.Version = msg.Version;
                 model.Code = string.Empty;
                 model.Version = _createdHandler.Version;
 
                 HttpHelper.SendLegacyMessage(model);
-                HttpHelper.SendNextMessage(model);
+                //TODO: ???????????????????????????
+                //HttpHelper.SendNextMessage(model);
             }
         }
 
@@ -77,11 +79,13 @@ namespace MemberConsumerSync
                 model.DateOfBirth = msg.DateOfBirth;
                 model.RequestDate = msg.RequestDate;
                 model.Date = msg.RequestDate;
+                model.RequestId = msg.RequestId;
                 model.Version = _createdHandler.Version;
                 model.Code = string.Empty;
 
                 HttpHelper.SendLegacyMessage(model);
-                HttpHelper.SendNextMessage(model);
+                //TODO: ???????????????????????????
+                //HttpHelper.SendNextMessage(model);
             }
         }
     }

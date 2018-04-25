@@ -3,6 +3,7 @@ using MemberProducerSync.Producer.Base;
 using MemberProducerSync.Producers;
 using MemberProducerSync.Utils;
 using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Linq;
@@ -33,6 +34,7 @@ namespace MemberProducerSync.MemberService
             }
             else
             {
+                model.ID = ObjectId.GenerateNewId().ToString();
                 model.Code = MemberEvents.Create;
                 await collection.InsertOneAsync(model);
             }

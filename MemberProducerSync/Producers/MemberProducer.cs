@@ -43,7 +43,9 @@ namespace MemberProducerSync.Producers
         {
             var message = new MemberUpdatedMessage();
 
+            message.ID = model.ID;
             message.FullName = model.FullName;
+            message.Source = model.Source;
             message.Age = model.Age;
             message.CellNumber = model.CellNumber;
             message.DateOfBirth = model.DateOfBirth;
@@ -60,7 +62,9 @@ namespace MemberProducerSync.Producers
         {
             var message = new AddMemberMessage();
 
+            message.ID = model.ID;
             message.FullName = model.FullName;
+            message.Source = model.Source;
             message.Age = model.Age;
             message.CellNumber = model.CellNumber;
             message.DateOfBirth = model.DateOfBirth;
