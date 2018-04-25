@@ -1,5 +1,4 @@
-﻿using CQRS.MongoDB;
-using KarafkaConsumer_POC.Contracts.Messages;
+﻿using KarafkaConsumer_POC.Contracts.Messages;
 using KarafkaConsumer_POC.Domain.Aggregates;
 using KarafkaConsumer_POC.Domain.Commands;
 using KarafkaConsumer_POC.Domain.Events;
@@ -10,8 +9,6 @@ namespace KarafkaConsumer_POC.Domain.Handlers
 {
     public class MemberUpdatedEventHandler
     {
-        public long Version { get; set; }
-
         public MemberUpdatedEventHandler(MemberUpdatedCommand command, MemberQueryReader reader)
         {
             _command = command;
@@ -58,7 +55,6 @@ namespace KarafkaConsumer_POC.Domain.Handlers
                 agg.AddEventToStream(e);
                 agg.RebuildEventStream();
                 agg.CommitChanges();
-                Version = agg.Version;
                 await _command.UpdateAsync(agg);
             }
             catch

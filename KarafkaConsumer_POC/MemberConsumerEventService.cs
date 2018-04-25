@@ -56,7 +56,6 @@ namespace MemberConsumerSync
                 model.Date = msg.RequestDate;
                 model.Version = msg.Version;
                 model.Code = string.Empty;
-                model.Version = _createdHandler.Version;
 
                 if(msg.Source == 0)
                 {
@@ -85,7 +84,6 @@ namespace MemberConsumerSync
                 model.RequestDate = msg.RequestDate;
                 model.Date = msg.RequestDate;
                 model.RequestId = msg.RequestId;
-                model.Version = _createdHandler.Version;
                 model.Code = string.Empty;
 
                 if (msg.Source == 0)

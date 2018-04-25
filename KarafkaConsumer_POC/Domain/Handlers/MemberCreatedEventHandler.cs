@@ -1,19 +1,15 @@
-﻿using CQRS.MongoDB;
-using KarafkaConsumer_POC.Contracts.Messages;
+﻿using KarafkaConsumer_POC.Contracts.Messages;
 using KarafkaConsumer_POC.Domain.Aggregates;
 using KarafkaConsumer_POC.Domain.Commands;
 using KarafkaConsumer_POC.Domain.Events;
 using KarafkaConsumer_POC.Domain.Queries;
 using System;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace KarafkaConsumer_POC.Domain.Handlers
 {
     public class MemberCreatedEventHandler
     {
-        public long Version { get; set; }
-
         public MemberCreatedEventHandler(MemberCreatedCommand command, MemberQueryReader qReader)
         {
             _command = command;
@@ -27,11 +23,11 @@ namespace KarafkaConsumer_POC.Domain.Handlers
         {
             MemberAggregate agg;
 
-            if(message.Source == 0)
+            if (message.Source == 0)
             {
                 agg = _reader.ReadOneAsync(x => x.Member.ID == message.ID)?.Result ?? MemberAggregate.New();
             }
-            else if(message.Source == 1)
+            else if (message.Source == 1)
             {
                 agg = _reader.ReadOneAsync(x => x.Member.LegacyID == message.LegacyID)?.Result ?? MemberAggregate.New();
             }
@@ -60,7 +56,6 @@ namespace KarafkaConsumer_POC.Domain.Handlers
                 agg.AddEventToStream(e);
                 agg.RebuildEventStream();
                 agg.CommitChanges();
-                Version = agg.Version;
                 await _command.AddAsync(agg);
             }
             catch (Exception)
