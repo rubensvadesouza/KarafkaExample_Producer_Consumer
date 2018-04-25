@@ -58,9 +58,14 @@ namespace MemberConsumerSync
                 model.Code = string.Empty;
                 model.Version = _createdHandler.Version;
 
-                HttpHelper.SendLegacyMessage(model);
-                //TODO: ???????????????????????????
-                //HttpHelper.SendNextMessage(model);
+                if(msg.Source == 0)
+                {
+                    HttpHelper.SendLegacyMessage(model);
+                }
+                else
+                {
+                    HttpHelper.SendNextMessage(model);
+                }
             }
         }
 
@@ -83,9 +88,14 @@ namespace MemberConsumerSync
                 model.Version = _createdHandler.Version;
                 model.Code = string.Empty;
 
-                HttpHelper.SendLegacyMessage(model);
-                //TODO: ???????????????????????????
-                //HttpHelper.SendNextMessage(model);
+                if (msg.Source == 0)
+                {
+                    HttpHelper.SendLegacyMessage(model);
+                }
+                else
+                {
+                    HttpHelper.SendNextMessage(model);
+                }
             }
         }
     }

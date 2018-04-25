@@ -34,7 +34,7 @@ namespace MemberProducerSync.MemberService
             }
             else
             {
-                model.ID = ObjectId.GenerateNewId().ToString();
+                model.ID = model.ID ?? ObjectId.GenerateNewId().ToString();
                 model.Code = MemberEvents.Create;
                 await collection.InsertOneAsync(model);
             }
