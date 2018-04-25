@@ -45,7 +45,7 @@ namespace KarafkaConsumer_POC.Domain.Handlers
                             && x.ID == message.ID
                             && x.Age == message.Age
                             && x.CellNumber == message.CellNumber
-                            && x.DateOfBirth == message.DateOfBirth.ToLocalTime());
+                            && x.DateOfBirth == message.DateOfBirth);
 
             if (naoProcessa)
             {
