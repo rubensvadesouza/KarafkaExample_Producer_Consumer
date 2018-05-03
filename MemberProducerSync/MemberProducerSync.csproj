@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dharma" Version="1.1.70" />
+    <PackageReference Include="Dharma" Version="1.1.72" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.0.1" />
@@ -30,6 +30,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\KarafkaConsumer_POC\MemberConsumerSync.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ExternalFiles\certificate.pem">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

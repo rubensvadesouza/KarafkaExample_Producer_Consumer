@@ -15,7 +15,7 @@ namespace MemberProducerSync.Utils
         {
             return new ConfigurationBuilder()
              .SetBasePath(Directory.GetCurrentDirectory())
-             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+             .AddJsonFile("appconfig.json", optional: true, reloadOnChange: true)
              .Build();
         }
     }

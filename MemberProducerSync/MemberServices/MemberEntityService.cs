@@ -34,28 +34,30 @@ namespace MemberProducerSync.MemberService
 
         private bool InsertMember(MemberModel model)
         {
-            try
-            {
-                var e = GetById(model.ID);
-                bool isNew = e == null;
+            model.Code = MemberEvents.Create;
+            _sync.Send(model);
+            //try
+            //{
+            //    var e = GetById(model.ID);
+            //    bool isNew = e == null;
 
-                e = Map(model, e);
+            //    e = Map(model, e);
 
-                if (isNew)
-                {
-                    model.Code = MemberEvents.Create;
-                    _repo.Add(e);
-                }
-                else
-                {
-                    model.Code = MemberEvents.Update;
-                    _repo.Update(e);
-                }
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            //    if (isNew)
+            //    {
+            //        model.Code = MemberEvents.Create;
+            //        _repo.Add(e);
+            //    }
+            //    else
+            //    {
+            //        model.Code = MemberEvents.Update;
+            //        _repo.Update(e);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    return false;
+            //}
 
             return true;
         }

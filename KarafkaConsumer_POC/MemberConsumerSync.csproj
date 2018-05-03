@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dharma" Version="1.1.70" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.1" />
@@ -16,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Dharma\marketplacenet\Dharma\Dharma.csproj" />
     <ProjectReference Include="..\CQRS.MongoDB\CQRS.MongoDB.csproj" />
     <ProjectReference Include="..\CQRS\CQRS.csproj" />
     <ProjectReference Include="..\EventSourcing\EventSourcing.csproj" />
@@ -26,7 +26,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="ExternalFiles\certificate.pem">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

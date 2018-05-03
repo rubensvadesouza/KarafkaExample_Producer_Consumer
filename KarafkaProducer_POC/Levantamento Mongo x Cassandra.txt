@@ -1,0 +1,34 @@
+
+Modelos de Objectos complexos
+Vantagem: Mongo
+MongoDB: trabalha com Json e aceita qualquer tipo de objeto, não necessitando que a base esteja configurado para o mesmo
+Cassandra: tem uma complexidade parecida com o SQL Server, sendo necessário criar as tabelas com suas tipagens,
+e também configurar os indices de forma correta para a base conseguir ter um bom desempenho
+
+Alta Disponibilidade
+Vantagem: Cassandra
+MonboDB: Trabalha com sistema Mestre/Escravo, neste caso, as replicas demoram um tempo (1 minuto)
+para se recuperarem caso o Mestre pare
+Cassandra: trabalha com sistema de Cluster Replicado, caso um venha a cair, um dos outros assumem o lugar imediatamente
+
+Escalabilidade de Escrita
+Vantagem: Cassandra
+MongoDB: O processo de escrita fica centralizado no Mestre, tornando-o limitado a escritas mesmo com clusters
+Cassandra: Todos os clusters do Cassandra podem realizar escrita, tornando-o muito mais rápido quando trabalhamos com clusters
+
+Leitura
+Vantagem:Cassandra
+MongoDB:clusters escravos que realizam a leitura
+Cassandra:clusters que permitem leitura igual ao Mongo, porém cassandra tem uma indexação que permite facilitar a busca nestes clusters
+de forma a tornar a aplicação mais rápida
+
+
+Fontes de Informação
+
+Testes locais de Escrita/Leitura
+https://academy.datastax.com/planet-cassandra/nosql-performance-benchmarks
+https://scalegrid.io/blog/cassandra-vs-mongodb/
+
+
+
+

@@ -26,18 +26,23 @@ namespace KarafkaConsumer_POC
 
         public static void Main()
         {
+            ProcessMessage();
+        }
+
+        private static void ProcessMessage()
+        {
             _config = new ConfigurationBuilder()
-                         .SetBasePath(Directory.GetCurrentDirectory())
-                         .AddJsonFile("appconfig.json", optional: true, reloadOnChange: true)
-                         .Build();
+                           .SetBasePath(Directory.GetCurrentDirectory())
+                           .AddJsonFile("appconfig.json", optional: true, reloadOnChange: true)
+                           .Build();
             Mapper();
 
-            _services = Setup();
+            //_services = Setup();
 
-            var _cHandler = _services.GetService<MemberCreatedEventHandler>();
-            var uHandler = _services.GetService<MemberUpdatedEventHandler>();
+            //var _cHandler = _services.GetService<MemberCreatedEventHandler>();
+            //var uHandler = _services.GetService<MemberUpdatedEventHandler>();
 
-            _eventService = new MemberConsumerEventService(_cHandler, uHandler);
+            //_eventService = new MemberConsumerEventService(_cHandler, uHandler);
 
             var config = GetConfig();
 
@@ -74,6 +79,7 @@ namespace KarafkaConsumer_POC
                 { "sasl.password", _config["password"].ToString() },
                 { "group.id", Guid.NewGuid().ToString() },
                 { "auto.offset.reset", "smallest" },
+                { "debug","broker" },
             };
 
             return config;

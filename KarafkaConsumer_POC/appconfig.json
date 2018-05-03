@@ -1,9 +1,15 @@
 ﻿{
-  "brokers": "omnibus-01.srvs.cloudkafka.com:9094,omnibus-02.srvs.cloudkafka.com:9094,omnibus-03.srvs.cloudkafka.com:9094",
-  "user": "n733uiq5",
-  "password": "Eds6fopo8tVEDmpaHewnSJwNBOmUwDfb",
+  //"brokers": "omnibus-01.srvs.cloudkafka.com,omnibus-02.srvs.cloudkafka.com,omnibus-03.srvs.cloudkafka.com",
+  //"user": "n733uiq5",
+  //"password": "Eds6fopo8tVEDmpaHewnSJwNBOmUwDfb",
+  //"caLocation": "ExternalFiles\\certificate.pem",
+  //"topicName": "n733uiq5-default",
+
+  "brokers": "green-kayak-01.srvs.cloudkafka.com:9094",
+  "user": "wauu2r78",
+  "password": "O59KPsN_JkS45bx2gPYGxMxD1HYbbPzU",
   "caLocation": "ExternalFiles\\certificate.pem",
-  "topicName": "n733uiq5-default",
+  "topicName": "testhost",
 
   "SyncMembers": {
     "url": "http://localhost:55292/api/"
